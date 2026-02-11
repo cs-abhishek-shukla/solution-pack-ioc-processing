@@ -1,0 +1,13 @@
+{
+    "@context": "\/api\/3\/contexts\/File",
+    "@type": "File",
+    "uuid": "2f6073ae-1ee3-4752-a282-165303a7638d",
+    "assignee": "",
+    "id": "2f6073ae-1ee3-4752-a282-165303a7638d",
+    "filename": "test_iocs.txt",
+    "mimeType": "text\/plain",
+    "uploadDate": 1770824766.925712,
+    "size": 190,
+    "thumbnail": null,
+    "metadata": []
+}

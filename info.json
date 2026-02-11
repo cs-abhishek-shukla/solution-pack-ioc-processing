@@ -1,0 +1,82 @@
+{
+    "name": "iOCProcessing",
+    "version": "1.0.0",
+    "fsrMinCompatibility": "7.6.4",
+    "type": "solutionpack",
+    "local": true,
+    "label": "IOC Processing",
+    "dependencies": [
+        {
+            "name": "sOARFramework",
+            "type": "solutionpack",
+            "label": "SOAR Framework",
+            "minVersion": null
+        },
+        {
+            "name": "socSimulator",
+            "type": "solutionpack",
+            "label": "SOC Simulator",
+            "minVersion": null
+        }
+    ],
+    "prerequisite": null,
+    "publisher": "FortiSOAR",
+    "description": "This solution pack will help to process the IOCs from the Alert attachments.",
+    "help": null,
+    "category": [
+        "Threat Intelligence"
+    ],
+    "supportInfo": null,
+    "iconLarge": null,
+    "postInstallConfig": null,
+    "date": "",
+    "contents": {
+        "modules": {
+            "attachments": {
+                "name": "Attachments",
+                "apiName": "attachments"
+            },
+            "scenario": {
+                "name": "Scenario",
+                "apiName": "scenario"
+            }
+        },
+        "viewTemplates": {
+            "scenario": {
+                "name": "Scenario",
+                "apiName": "scenario",
+                "views": [
+                    "form",
+                    "detail",
+                    "list"
+                ]
+            }
+        },
+        "playbooks": [
+            {
+                "name": "10 - SP - IOC Processing"
+            },
+            {
+                "name": "04 - Actions"
+            }
+        ],
+        "connectors": [
+            {
+                "name": "File Content Extraction",
+                "apiName": "file-content-extraction"
+            }
+        ],
+        "recordSets": [
+            {
+                "name": "Attachments",
+                "apiName": "attachments",
+                "count": 1
+            },
+            {
+                "name": "Scenario",
+                "apiName": "scenario",
+                "count": 1
+            }
+        ]
+    }
+}

@@ -1,0 +1,167 @@
+{
+    "@context": "\/api\/3\/contexts\/Workflow",
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Scenario - Generating Alert with IOC attachments",
+    "aliasName": null,
+    "tag": null,
+    "description": "Create Alert which has attachment record link to it.",
+    "isActive": true,
+    "debug": false,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/cb72749c-c756-4a48-abc6-ba857c6c4dd5",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/b0eba58f-6cde-4508-9479-05138c784c4b",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "attachment_iri": "\/api\/3\/attachments\/a6a0f568-26d6-40c8-9733-c2755342c379"
+            },
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "5bcb57b1-1a13-44c8-b32b-b28cba175fe6"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Email Alert",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "beta": false,
+                    "name": "IOC Processing",
+                    "raised": "\/api\/3\/picklists\/5434ed03-11ab-4652-ac72-bdfaf0e91ef5",
+                    "status": "\/api\/3\/picklists\/7de816ff-7140-4ee5-bd05-93ce22002146",
+                    "__replace": "true",
+                    "spotCheck": false,
+                    "attachments": "{{vars.attachment_iri}}",
+                    "ackSlaStatus": "\/api\/3\/picklists\/72979f64-e8b9-4888-a965-957e0ec24818",
+                    "respSlaStatus": "\/api\/3\/picklists\/72979f64-e8b9-4888-a965-957e0ec24818",
+                    "priorityWeight": 1,
+                    "escalatedtoincident": "\/api\/3\/picklists\/2128a09c-153d-4db3-985d-de6be33deae5",
+                    "resolvedAutomatedly": false,
+                    "alertRemainingAckSLA": 0
+                },
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/upsert\/alerts",
+                "__recommend": [],
+                "fieldOperation": {
+                    "automation": "Overwrite",
+                    "enrichmentState": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "435",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "c902fdd2-200a-48df-8a65-f88704f61ca6"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Field Mapping",
+            "description": null,
+            "arguments": [],
+            "status": null,
+            "top": "300",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "d141edcf-8342-4fc7-8962-5404339d629b"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Return Record IRI",
+            "description": null,
+            "arguments": {
+                "recordIRIs": "{{vars.steps.Create_Email_Alert['@id'], vars.attachment_iri}}"
+            },
+            "status": null,
+            "top": "570",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "f3a2cb9c-dd44-4fd0-98dc-b6c8716520b1"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "step_variables": {
+                    "input": {
+                        "params": []
+                    }
+                }
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/b348f017-9a94-471f-87f8-ce88b6a7ad62",
+            "group": null,
+            "uuid": "b0eba58f-6cde-4508-9479-05138c784c4b"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Field Mapping",
+            "targetStep": "\/api\/3\/workflow_steps\/d141edcf-8342-4fc7-8962-5404339d629b",
+            "sourceStep": "\/api\/3\/workflow_steps\/5bcb57b1-1a13-44c8-b32b-b28cba175fe6",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "bfb13b5e-bcae-4e9b-8c6f-33be59ea4e75"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Email Alert -> Return Record IRI",
+            "targetStep": "\/api\/3\/workflow_steps\/f3a2cb9c-dd44-4fd0-98dc-b6c8716520b1",
+            "sourceStep": "\/api\/3\/workflow_steps\/c902fdd2-200a-48df-8a65-f88704f61ca6",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ba15e9e9-8185-463c-ac92-c77c383ff99b"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Field Mapping -> Create Email Alert",
+            "targetStep": "\/api\/3\/workflow_steps\/c902fdd2-200a-48df-8a65-f88704f61ca6",
+            "sourceStep": "\/api\/3\/workflow_steps\/d141edcf-8342-4fc7-8962-5404339d629b",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "67550543-737d-47aa-8cb0-c8c980bd09de"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/5bcb57b1-1a13-44c8-b32b-b28cba175fe6",
+            "sourceStep": "\/api\/3\/workflow_steps\/b0eba58f-6cde-4508-9479-05138c784c4b",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "9928e5f1-dabb-4fd7-b82f-1bea9435a15c"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": false,
+    "uuid": "cadb928d-3500-43fc-8bf2-5a32188575d2",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "Scenario"
+    ]
+}

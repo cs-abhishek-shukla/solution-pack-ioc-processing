@@ -1,0 +1,29 @@
+[
+    {
+        "@type": "Scenario",
+        "configuration": null,
+        "title": "IOC Processing Alert",
+        "description": "This scenario generates an alert along with an attachment record. The attachment contains sample IOCs that need to be processed further and is linked to the alert. This enables execution of the subsequent workflow.",
+        "steps": {
+            "Steps": [
+                {
+                    "name": "User Reported IOC Proceesing Email Alert",
+                    "type": "executePlaybook",
+                    "playbookIRI": "\/api\/3\/playbooks\/cadb928d-3500-43fc-8bf2-5a32188575d2",
+                    "preCreateMessage": "Creating demo record for IOC Processing Email alert",
+                    "postCreateMessage": "",
+                    "waitTimeforNextStep": "0"
+                }
+            ]
+        },
+        "createdAlertsID": "[\"\/api\/3\/alerts\/71e8bfae-e6a4-4d79-a68c-428b10588854\",\"\/api\/3\/attachments\/a6a0f568-26d6-40c8-9733-c2755342c379\"]",
+        "uuid": "2a159a58-2b4f-4543-962f-88203e39beaf",
+        "createUser": "\/api\/3\/people\/3451141c-bac6-467c-8d72-85e0fab569ce",
+        "createDate": 1770225665.731615,
+        "modifyUser": "\/api\/3\/appliances\/57545210-2adc-472b-a24f-2df6ee8dfe63",
+        "modifyDate": 1770808257.70226,
+        "recordTags": [
+            "Scenario"
+        ]
+    }
+]

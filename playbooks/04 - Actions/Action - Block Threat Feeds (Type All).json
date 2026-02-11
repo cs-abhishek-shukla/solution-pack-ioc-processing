@@ -1,0 +1,385 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Action - Block Threat Feeds (Type All)",
+    "aliasName": null,
+    "tag": null,
+    "description": "Blocks all types of feeds on the firewall.",
+    "isActive": true,
+    "debug": false,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [
+        "threatFeeds",
+        "batchSize"
+    ],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/2d150b7b-ee6b-4686-a249-3c2cfa99f657",
+    "versions": [
+        {
+            "@type": "WorkflowVersion",
+            "note": "Base",
+            "json": "{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/Workflow\",\"@type\":\"Workflow\",\"triggerLimit\":null,\"name\":\"Action - Block Threat Feeds (Type All)\",\"aliasName\":null,\"tag\":null,\"description\":\"Blocks all types of feeds on the firewall.\",\"isActive\":true,\"debug\":false,\"singleRecordExecution\":false,\"remoteExecutableFlag\":false,\"parameters\":[\"threatFeeds\",\"batchSize\"],\"synchronous\":false,\"collection\":\"\\\/api\\\/3\\\/workflow_collections\\\/2d150b7b-ee6b-4686-a249-3c2cfa99f657\",\"versions\":[],\"triggerStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/c8ada7ac-4736-4205-9c20-bda7d0acb6ca\",\"steps\":[{\"@type\":\"WorkflowStep\",\"name\":\"Block Domains\",\"description\":null,\"arguments\":{\"when\":\"{{vars.list_of_domains_to_block | length > 0}}\",\"for_each\":{\"item\":\"{{vars.total_batches_domains}}\",\"parallel\":false,\"condition\":\"\"},\"arguments\":{\"domainList\":\"{{vars.item}}\"},\"apply_async\":false,\"step_variables\":[],\"pass_parent_env\":false,\"pass_input_record\":true,\"workflowReference\":\"\\\/api\\\/3\\\/workflows\\\/e2bcf21c-cf75-4106-903b-69f22e0ab8e3\"},\"status\":null,\"top\":\"20\",\"left\":\"1100\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"WorkflowReference\",\"displayName\":\"Reference a Playbook\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/f3561053-417f-4591-8fa4-ca9da8e1da8c\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/workflow_reference\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-playbooks\",\"background\":\"#76CCFD\",\"index\":420,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"74932bdc-b8b6-4d24-88c4-1a4dfbc524f3\"},\"group\":null,\"uuid\":\"3a72f2ae-2974-4d8c-8293-c9c39e8d8d80\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/3a72f2ae-2974-4d8c-8293-c9c39e8d8d80\",\"htmlEncodedName\":\"Block Domains\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Block Email Addresses\",\"description\":null,\"arguments\":{\"when\":\"{{vars.list_of_email_addresses_to_block | length > 0}}\",\"for_each\":{\"item\":\"{{vars.total_batches_email_addresses}}\",\"parallel\":false,\"condition\":\"\"},\"arguments\":{\"emailAddressList\":\"{{vars.item}}\"},\"apply_async\":false,\"step_variables\":[],\"pass_parent_env\":false,\"pass_input_record\":true,\"workflowReference\":\"\\\/api\\\/3\\\/workflows\\\/5a5874de-c9aa-4399-bc71-d1f94eeb46c7\"},\"status\":null,\"top\":\"190\",\"left\":\"1100\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"WorkflowReference\",\"displayName\":\"Reference a Playbook\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/f3561053-417f-4591-8fa4-ca9da8e1da8c\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/workflow_reference\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-playbooks\",\"background\":\"#76CCFD\",\"index\":420,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"74932bdc-b8b6-4d24-88c4-1a4dfbc524f3\"},\"group\":null,\"uuid\":\"f6f06d38-3698-43a3-8233-fa7a7fef1966\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/f6f06d38-3698-43a3-8233-fa7a7fef1966\",\"htmlEncodedName\":\"Block Email Addresses\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Block FilesHashes\",\"description\":null,\"arguments\":{\"when\":\"{{vars.list_of_filehashes_to_block | length > 0}}\",\"for_each\":{\"item\":\"{{vars.total_batches_filehashes}}\",\"parallel\":false,\"condition\":\"\"},\"arguments\":{\"filehashesList\":\"{{vars.input.params.threatFeeds}}\"},\"apply_async\":false,\"step_variables\":[],\"pass_parent_env\":false,\"pass_input_record\":true,\"workflowReference\":\"\\\/api\\\/3\\\/workflows\\\/6d4f8d34-adb7-4442-ada2-1f408956f246\"},\"status\":null,\"top\":\"350\",\"left\":\"1100\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"WorkflowReference\",\"displayName\":\"Reference a Playbook\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/f3561053-417f-4591-8fa4-ca9da8e1da8c\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/workflow_reference\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-playbooks\",\"background\":\"#76CCFD\",\"index\":420,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"74932bdc-b8b6-4d24-88c4-1a4dfbc524f3\"},\"group\":null,\"uuid\":\"eea49f6b-240a-49a4-8284-f67c10957950\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/eea49f6b-240a-49a4-8284-f67c10957950\",\"htmlEncodedName\":\"Block FilesHashes\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Block IPv4 Addresses\",\"description\":null,\"arguments\":{\"when\":\"{{vars.list_of_ip4s_to_block | length > 0}}\",\"for_each\":{\"item\":\"{{vars.total_batches_ipv4}}\",\"parallel\":false,\"condition\":\"\"},\"arguments\":{\"ip4AddressList\":\"{{vars.item}}\"},\"apply_async\":false,\"step_variables\":[],\"pass_parent_env\":false,\"pass_input_record\":true,\"workflowReference\":\"\\\/api\\\/3\\\/workflows\\\/00c8672c-355e-4625-b122-31307fa55fd5\"},\"status\":null,\"top\":\"510\",\"left\":\"1100\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"WorkflowReference\",\"displayName\":\"Reference a Playbook\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/f3561053-417f-4591-8fa4-ca9da8e1da8c\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/workflow_reference\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-playbooks\",\"background\":\"#76CCFD\",\"index\":420,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"74932bdc-b8b6-4d24-88c4-1a4dfbc524f3\"},\"group\":null,\"uuid\":\"65efaa9f-6b31-4a79-ae60-e4d1a1e624f9\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/65efaa9f-6b31-4a79-ae60-e4d1a1e624f9\",\"htmlEncodedName\":\"Block IPv4 Addresses\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Block IPv6 Addresses\",\"description\":null,\"arguments\":{\"when\":\"{{vars.list_of_ip6s_to_block | length > 0}}\",\"for_each\":{\"item\":\"{{vars.total_batches_ipv6}}\",\"parallel\":false,\"condition\":\"\"},\"arguments\":{\"ip6AddressList\":\"{{vars.item}}\"},\"apply_async\":false,\"step_variables\":[],\"pass_parent_env\":false,\"pass_input_record\":true,\"workflowReference\":\"\\\/api\\\/3\\\/workflows\\\/2c252b83-fe48-4c28-b57c-b0f075a46ce3\"},\"status\":null,\"top\":\"990\",\"left\":\"1100\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"WorkflowReference\",\"displayName\":\"Reference a Playbook\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/f3561053-417f-4591-8fa4-ca9da8e1da8c\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/workflow_reference\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-playbooks\",\"background\":\"#76CCFD\",\"index\":420,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"74932bdc-b8b6-4d24-88c4-1a4dfbc524f3\"},\"group\":null,\"uuid\":\"49845a0c-4728-42d1-ab43-744bd848e4f6\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/49845a0c-4728-42d1-ab43-744bd848e4f6\",\"htmlEncodedName\":\"Block IPv6 Addresses\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Block Mac Addresses\",\"description\":null,\"arguments\":{\"when\":\"{{vars.list_of_mac_addresses_to_block | length > 0}}\",\"for_each\":{\"item\":\"{{vars.total_batches_mac_addresses}}\",\"parallel\":false,\"condition\":\"\"},\"arguments\":{\"macAddressList\":\"{{vars.item}}\"},\"apply_async\":false,\"step_variables\":[],\"pass_parent_env\":false,\"pass_input_record\":true,\"workflowReference\":\"\\\/api\\\/3\\\/workflows\\\/5976355c-90bf-4ff8-b80e-c2f8411b9aa1\"},\"status\":null,\"top\":\"660\",\"left\":\"1100\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"WorkflowReference\",\"displayName\":\"Reference a Playbook\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/f3561053-417f-4591-8fa4-ca9da8e1da8c\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/workflow_reference\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-playbooks\",\"background\":\"#76CCFD\",\"index\":420,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"74932bdc-b8b6-4d24-88c4-1a4dfbc524f3\"},\"group\":null,\"uuid\":\"0133633d-e3f5-4839-8df0-1a225dd37db5\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/0133633d-e3f5-4839-8df0-1a225dd37db5\",\"htmlEncodedName\":\"Block Mac Addresses\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Block URLs\",\"description\":null,\"arguments\":{\"when\":\"{{vars.list_of_urls_to_block | length > 0}}\",\"for_each\":{\"item\":\"{{vars.total_batches_urls}}\",\"parallel\":false,\"condition\":\"\"},\"arguments\":{\"urlList\":\"{{vars.item}}\"},\"apply_async\":false,\"step_variables\":[],\"pass_parent_env\":false,\"pass_input_record\":true,\"workflowReference\":\"\\\/api\\\/3\\\/workflows\\\/b175b3e4-0c7a-4f91-9a7f-a6b858c77885\"},\"status\":null,\"top\":\"830\",\"left\":\"1100\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"WorkflowReference\",\"displayName\":\"Reference a Playbook\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/f3561053-417f-4591-8fa4-ca9da8e1da8c\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/workflow_reference\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-playbooks\",\"background\":\"#76CCFD\",\"index\":420,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"74932bdc-b8b6-4d24-88c4-1a4dfbc524f3\"},\"group\":null,\"uuid\":\"b69e11cc-3674-4962-8cc7-8808122d23e3\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/b69e11cc-3674-4962-8cc7-8808122d23e3\",\"htmlEncodedName\":\"Block URLs\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Calculate Batches\",\"description\":null,\"arguments\":{\"total_batches_ipv4\":\"{{(vars.list_of_ip4s_to_block | batch(vars.input.params.batchSize)) | list}}\",\"total_batches_ipv6\":\"{{(vars.list_of_ip4s_to_block | batch(vars.input.params.batchSize))| list}}\",\"total_batches_urls\":\"{{(vars.list_of_urls_to_block | batch(vars.input.params.batchSize))| list}}\",\"total_batches_domains\":\"{{(vars.list_of_domains_to_block | batch(vars.input.params.batchSize))| list}}\",\"total_batches_filehashes\":\"{{(vars.list_of_filehashes_to_block | batch(vars.input.params.batchSize))| list}}\",\"total_batches_mac_addresses\":\"{{(vars.list_of_mac_addresses_to_block | batch(vars.input.params.batchSize))| list}}\",\"total_batches_email_addresses\":\"{{(vars.list_of_email_addresses_to_block | batch(vars.input.params.batchSize))| list}}\"},\"status\":null,\"top\":\"510\",\"left\":\"775\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"SetVariable\",\"displayName\":\"Set Variable\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/c04ab14a-669e-4502-92a3-3beef3cf6219\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/set_multiple\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-set-variables\",\"background\":\"#f7ac20\",\"index\":140,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"04d0cf46-b6a8-42c4-8683-60a7eaa69e8f\"},\"group\":null,\"uuid\":\"3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"htmlEncodedName\":\"Calculate Batches\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Configuration\",\"description\":null,\"arguments\":{\"list_of_ip4s_to_block\":\"{{vars.input.params.threatFeeds.get(\\\"IPv4 Address\\\", []) + vars.input.params.threatFeeds.get(\\\"ipv4s\\\", []) + vars.input.params.threatFeeds.get(\\\"IP Address\\\", [])}}\",\"list_of_ip6s_to_block\":\"{{vars.input.params.threatFeeds.get(\\\"IPv6 Address\\\", []) + vars.input.params.threatFeeds.get(\\\"ipv6s\\\", [])}}\",\"list_of_urls_to_block\":\"{{vars.input.params.threatFeeds.get(\\\"urls\\\", []) + vars.input.params.threatFeeds.get(\\\"URL\\\", [])}}\",\"list_of_domains_to_block\":\"{{vars.input.params.threatFeeds.get(\\\"domains\\\", []) + vars.input.params.threatFeeds.get(\\\"Domain\\\", [])}}\",\"list_of_filehashes_to_block\":\"{% set merged_array = vars.input.params.threatFeeds.get(\\\"sha1s\\\",[]) + vars.input.params.threatFeeds.get(\\\"md5s\\\",[]) + vars.input.params.threatFeeds.get(\\\"sha256s\\\",[]) + vars.input.params.threatFeeds.get(\\\"sha512s\\\",[]) + vars.input.params.threatFeeds.get(\\\"FileHash\\\",[]) %}\\n{{merged_array}}\",\"list_of_mac_addresses_to_block\":\"{{vars.input.params.threatFeeds.get(\\\"mac_addresses\\\", []) + vars.input.params.threatFeeds.get(\\\"MAC Address\\\", [])}}\",\"list_of_email_addresses_to_block\":\"{{vars.input.params.threatFeeds.get(\\\"email_addresses\\\", []) + vars.input.params.threatFeeds.get(\\\"Email Address\\\", [])}}\"},\"status\":null,\"top\":\"510\",\"left\":\"450\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"SetVariable\",\"displayName\":\"Set Variable\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/c04ab14a-669e-4502-92a3-3beef3cf6219\",\"arguments\":{\"script\":\"\\\/wf\\\/workflow\\\/tasks\\\/set_multiple\"},\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/ee73e569-2188-43fe-a7f0-1964ba82a4de\",\"icon\":\"icon icon-set-variables\",\"background\":\"#f7ac20\",\"index\":140,\"visible\":true,\"deprecated\":false,\"description\":null,\"uuid\":\"04d0cf46-b6a8-42c4-8683-60a7eaa69e8f\"},\"group\":null,\"uuid\":\"b3ed64f2-9871-45ca-b32d-f2c20531eb8a\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/b3ed64f2-9871-45ca-b32d-f2c20531eb8a\",\"htmlEncodedName\":\"Configuration\",\"htmlEncodedDescription\":null},{\"@type\":\"WorkflowStep\",\"name\":\"Start\",\"description\":null,\"arguments\":{\"__triggerLimit\":true,\"step_variables\":{\"input\":{\"params\":[]}},\"triggerOnSource\":true,\"triggerOnReplicate\":false},\"status\":null,\"top\":\"510\",\"left\":\"125\",\"stepType\":{\"@context\":\"\\\/api\\\/3\\\/contexts\\\/WorkflowStepType\",\"@type\":\"WorkflowStepType\",\"name\":\"cybersponse.abstract_trigger\",\"displayName\":\"Referenced\",\"widget\":null,\"collection\":\"\\\/api\\\/3\\\/step_type_collections\\\/51627f80-3dd5-4260-b86d-cc53a7cece15\",\"arguments\":[],\"parent\":\"\\\/api\\\/3\\\/workflow_step_types\\\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f\",\"icon\":\"icon icon-referenced\",\"background\":null,\"index\":140,\"visible\":true,\"deprecated\":false,\"description\":\"Triggered from another playbook using a \\\"Reference Playbook\\\" step or from a schedule.\",\"uuid\":\"b348f017-9a94-471f-87f8-ce88b6a7ad62\"},\"group\":null,\"uuid\":\"c8ada7ac-4736-4205-9c20-bda7d0acb6ca\",\"@id\":\"\\\/api\\\/3\\\/workflow_steps\\\/c8ada7ac-4736-4205-9c20-bda7d0acb6ca\",\"htmlEncodedName\":\"Start\",\"htmlEncodedDescription\":null}],\"routes\":[{\"@type\":\"WorkflowRoute\",\"name\":\"Calculate Batches -> Block Domains\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3a72f2ae-2974-4d8c-8293-c9c39e8d8d80\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"d89e692b-3b2c-41f8-89fd-63767c6c96b0\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/d89e692b-3b2c-41f8-89fd-63767c6c96b0\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Calculate Batches -> Block Email Addresses\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/f6f06d38-3698-43a3-8233-fa7a7fef1966\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"532bef9f-f924-48f2-860f-3beec900c278\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/532bef9f-f924-48f2-860f-3beec900c278\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Calculate Batches -> Block FilesHashes\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/eea49f6b-240a-49a4-8284-f67c10957950\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"7e6a279f-b5a4-4609-8a1b-cc1392726853\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/7e6a279f-b5a4-4609-8a1b-cc1392726853\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Calculate Batches -> Block IPv4 Addresses\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/65efaa9f-6b31-4a79-ae60-e4d1a1e624f9\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"e3e5f54b-9225-4032-8154-aa79bd508f15\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/e3e5f54b-9225-4032-8154-aa79bd508f15\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Calculate Batches -> Block IPv6 Addresses\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/49845a0c-4728-42d1-ab43-744bd848e4f6\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"a5f3caf9-fb90-4c7f-9cac-9388d775981c\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/a5f3caf9-fb90-4c7f-9cac-9388d775981c\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Calculate Batches -> Block Mac Addresses\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/0133633d-e3f5-4839-8df0-1a225dd37db5\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"4c0200e7-83ad-49a3-93cd-75cd3d679af1\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/4c0200e7-83ad-49a3-93cd-75cd3d679af1\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Calculate Batches -> Block URLs\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/b69e11cc-3674-4962-8cc7-8808122d23e3\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"54eb7c43-a026-4d46-a3d9-5597a6876802\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/54eb7c43-a026-4d46-a3d9-5597a6876802\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Configuration -> Calculate Batches\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/b3ed64f2-9871-45ca-b32d-f2c20531eb8a\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"3a69ab81-3ac7-4fea-bbb4-771615c438f7\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/3a69ab81-3ac7-4fea-bbb4-771615c438f7\"},{\"@type\":\"WorkflowRoute\",\"name\":\"Start -> Configuration\",\"targetStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/b3ed64f2-9871-45ca-b32d-f2c20531eb8a\",\"sourceStep\":\"\\\/api\\\/3\\\/workflow_steps\\\/c8ada7ac-4736-4205-9c20-bda7d0acb6ca\",\"label\":null,\"isExecuted\":false,\"group\":null,\"uuid\":\"169b5d10-0255-49eb-8ea5-1bf6e51e9d6f\",\"@id\":\"\\\/api\\\/3\\\/workflow_routes\\\/169b5d10-0255-49eb-8ea5-1bf6e51e9d6f\"}],\"groups\":[],\"priority\":\"\\\/api\\\/3\\\/picklists\\\/2b563c61-ae2c-41c0-a85a-c9709585e3f2\",\"playbookOrigin\":\"\\\/api\\\/3\\\/picklists\\\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd\",\"isEditable\":true,\"uuid\":\"7fcbdbb5-1eec-4f1b-93c6-988451611c37\",\"owners\":[],\"isPrivate\":false,\"deletedAt\":null,\"recordTags\":[\"high_confidence_threat_feeds\",\"Subroutine\"],\"@id\":\"\\\/api\\\/3\\\/workflows\\\/7fcbdbb5-1eec-4f1b-93c6-988451611c37\",\"importedBy\":[{\"apiName\":\"threat-intel-management\",\"name\":\"Threat Intel Management\",\"version\":\"3.0.0\"}]}",
+            "autosave": false,
+            "workflow": "\/api\/3\/workflows\/7fcbdbb5-1eec-4f1b-93c6-988451611c37",
+            "uuid": "22054b79-c96f-4cc2-80bb-1ce96062875a"
+        }
+    ],
+    "triggerStep": "\/api\/3\/workflow_steps\/c8ada7ac-4736-4205-9c20-bda7d0acb6ca",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Block Domains",
+            "description": null,
+            "arguments": {
+                "when": "{{vars.list_of_domains_to_block | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.total_batches_domains}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "domainList": "{{vars.item}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/e2bcf21c-cf75-4106-903b-69f22e0ab8e3"
+            },
+            "status": null,
+            "top": "20",
+            "left": "1100",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "3a72f2ae-2974-4d8c-8293-c9c39e8d8d80"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block Email Addresses",
+            "description": null,
+            "arguments": {
+                "when": "{{vars.list_of_email_addresses_to_block | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.total_batches_email_addresses}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "emailAddressList": "{{vars.item}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/5a5874de-c9aa-4399-bc71-d1f94eeb46c7"
+            },
+            "status": null,
+            "top": "190",
+            "left": "1100",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "f6f06d38-3698-43a3-8233-fa7a7fef1966"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block FilesHashes",
+            "description": null,
+            "arguments": {
+                "when": "{{vars.list_of_filehashes_to_block | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.total_batches_filehashes}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "filehashesList": "{{vars.input.params.threatFeeds}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/6d4f8d34-adb7-4442-ada2-1f408956f246"
+            },
+            "status": null,
+            "top": "350",
+            "left": "1100",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "eea49f6b-240a-49a4-8284-f67c10957950"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block IPv4 Addresses",
+            "description": null,
+            "arguments": {
+                "when": "{{vars.list_of_ip4s_to_block | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.total_batches_ipv4}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "ip4AddressList": "{{vars.item}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/00c8672c-355e-4625-b122-31307fa55fd5"
+            },
+            "status": null,
+            "top": "510",
+            "left": "1100",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "65efaa9f-6b31-4a79-ae60-e4d1a1e624f9"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block IPv6 Addresses",
+            "description": null,
+            "arguments": {
+                "when": "{{vars.list_of_ip6s_to_block | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.total_batches_ipv6}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "ip6AddressList": "{{vars.item}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/2c252b83-fe48-4c28-b57c-b0f075a46ce3"
+            },
+            "status": null,
+            "top": "990",
+            "left": "1100",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "49845a0c-4728-42d1-ab43-744bd848e4f6"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block Mac Addresses",
+            "description": null,
+            "arguments": {
+                "when": "{{vars.list_of_mac_addresses_to_block | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.total_batches_mac_addresses}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "macAddressList": "{{vars.item}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/5976355c-90bf-4ff8-b80e-c2f8411b9aa1"
+            },
+            "status": null,
+            "top": "660",
+            "left": "1100",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "0133633d-e3f5-4839-8df0-1a225dd37db5"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block URLs",
+            "description": null,
+            "arguments": {
+                "when": "{{vars.list_of_urls_to_block | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.total_batches_urls}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "urlList": "{{vars.item}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/b175b3e4-0c7a-4f91-9a7f-a6b858c77885"
+            },
+            "status": null,
+            "top": "830",
+            "left": "1100",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "b69e11cc-3674-4962-8cc7-8808122d23e3"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Calculate Batches",
+            "description": null,
+            "arguments": {
+                "total_batches_ipv4": "{{(vars.list_of_ip4s_to_block | batch(vars.input.params.batchSize)) | list}}",
+                "total_batches_ipv6": "{{(vars.list_of_ip4s_to_block | batch(vars.input.params.batchSize))| list}}",
+                "total_batches_urls": "{{(vars.list_of_urls_to_block | batch(vars.input.params.batchSize))| list}}",
+                "total_batches_domains": "{{(vars.list_of_domains_to_block | batch(vars.input.params.batchSize))| list}}",
+                "total_batches_filehashes": "{{(vars.list_of_filehashes_to_block | batch(vars.input.params.batchSize))| list}}",
+                "total_batches_mac_addresses": "{{(vars.list_of_mac_addresses_to_block | batch(vars.input.params.batchSize))| list}}",
+                "total_batches_email_addresses": "{{(vars.list_of_email_addresses_to_block | batch(vars.input.params.batchSize))| list}}"
+            },
+            "status": null,
+            "top": "510",
+            "left": "775",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "3907a276-a22e-4bc4-9c74-22dcd7cd66f4"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "list_of_ip4s_to_block": "{{vars.input.params.threatFeeds.get(\"IPv4 Address\", []) + vars.input.params.threatFeeds.get(\"ipv4s\", []) + vars.input.params.threatFeeds.get(\"IP Address\", [])}}",
+                "list_of_ip6s_to_block": "{{vars.input.params.threatFeeds.get(\"IPv6 Address\", []) + vars.input.params.threatFeeds.get(\"ipv6s\", [])}}",
+                "list_of_urls_to_block": "{{vars.input.params.threatFeeds.get(\"urls\", []) + vars.input.params.threatFeeds.get(\"URL\", [])}}",
+                "list_of_domains_to_block": "{{vars.input.params.threatFeeds.get(\"domains\", []) + vars.input.params.threatFeeds.get(\"Domain\", [])}}",
+                "list_of_filehashes_to_block": "{% set merged_array = vars.input.params.threatFeeds.get(\"sha1s\",[]) + vars.input.params.threatFeeds.get(\"md5s\",[]) + vars.input.params.threatFeeds.get(\"sha256s\",[]) + vars.input.params.threatFeeds.get(\"sha512s\",[]) + vars.input.params.threatFeeds.get(\"FileHash\",[]) %}\n{{merged_array}}",
+                "list_of_mac_addresses_to_block": "{{vars.input.params.threatFeeds.get(\"mac_addresses\", []) + vars.input.params.threatFeeds.get(\"MAC Address\", [])}}",
+                "list_of_email_addresses_to_block": "{{vars.input.params.threatFeeds.get(\"email_addresses\", []) + vars.input.params.threatFeeds.get(\"Email Address\", [])}}"
+            },
+            "status": null,
+            "top": "510",
+            "left": "450",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "b3ed64f2-9871-45ca-b32d-f2c20531eb8a"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "__triggerLimit": true,
+                "step_variables": {
+                    "input": {
+                        "params": []
+                    }
+                },
+                "triggerOnSource": true,
+                "triggerOnReplicate": false
+            },
+            "status": null,
+            "top": "510",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/b348f017-9a94-471f-87f8-ce88b6a7ad62",
+            "group": null,
+            "uuid": "c8ada7ac-4736-4205-9c20-bda7d0acb6ca"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Calculate Batches -> Block Domains",
+            "targetStep": "\/api\/3\/workflow_steps\/3a72f2ae-2974-4d8c-8293-c9c39e8d8d80",
+            "sourceStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "d89e692b-3b2c-41f8-89fd-63767c6c96b0"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Calculate Batches -> Block Email Addresses",
+            "targetStep": "\/api\/3\/workflow_steps\/f6f06d38-3698-43a3-8233-fa7a7fef1966",
+            "sourceStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "532bef9f-f924-48f2-860f-3beec900c278"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Calculate Batches -> Block FilesHashes",
+            "targetStep": "\/api\/3\/workflow_steps\/eea49f6b-240a-49a4-8284-f67c10957950",
+            "sourceStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "7e6a279f-b5a4-4609-8a1b-cc1392726853"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Calculate Batches -> Block IPv4 Addresses",
+            "targetStep": "\/api\/3\/workflow_steps\/65efaa9f-6b31-4a79-ae60-e4d1a1e624f9",
+            "sourceStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e3e5f54b-9225-4032-8154-aa79bd508f15"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Calculate Batches -> Block IPv6 Addresses",
+            "targetStep": "\/api\/3\/workflow_steps\/49845a0c-4728-42d1-ab43-744bd848e4f6",
+            "sourceStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "a5f3caf9-fb90-4c7f-9cac-9388d775981c"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Calculate Batches -> Block Mac Addresses",
+            "targetStep": "\/api\/3\/workflow_steps\/0133633d-e3f5-4839-8df0-1a225dd37db5",
+            "sourceStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "4c0200e7-83ad-49a3-93cd-75cd3d679af1"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Calculate Batches -> Block URLs",
+            "targetStep": "\/api\/3\/workflow_steps\/b69e11cc-3674-4962-8cc7-8808122d23e3",
+            "sourceStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "54eb7c43-a026-4d46-a3d9-5597a6876802"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Calculate Batches",
+            "targetStep": "\/api\/3\/workflow_steps\/3907a276-a22e-4bc4-9c74-22dcd7cd66f4",
+            "sourceStep": "\/api\/3\/workflow_steps\/b3ed64f2-9871-45ca-b32d-f2c20531eb8a",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "3a69ab81-3ac7-4fea-bbb4-771615c438f7"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/b3ed64f2-9871-45ca-b32d-f2c20531eb8a",
+            "sourceStep": "\/api\/3\/workflow_steps\/c8ada7ac-4736-4205-9c20-bda7d0acb6ca",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "169b5d10-0255-49eb-8ea5-1bf6e51e9d6f"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": true,
+    "uuid": "7fcbdbb5-1eec-4f1b-93c6-988451611c37",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "high_confidence_threat_feeds",
+        "Subroutine"
+    ]
+}

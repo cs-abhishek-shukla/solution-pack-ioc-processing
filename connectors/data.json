@@ -1,0 +1,15 @@
+[
+    {
+        "name": "file-content-extraction",
+        "label": "File Content Extraction",
+        "category": [
+            "Utilities"
+        ],
+        "description": "Utility to Extract Text, Artifacts and Metadata from almost any file. Internet connectivity is required for the connector to download dependent packages",
+        "publisher": "Fortinet",
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    }
+]
