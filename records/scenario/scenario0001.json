@@ -9,7 +9,7 @@
                 {
                     "name": "User Reported IOC Proceesing Email Alert",
                     "type": "executePlaybook",
-                    "playbookIRI": "\/api\/3\/playbooks\/cadb928d-3500-43fc-8bf2-5a32188575d2",
+                    "playbookIRI": "\/api\/3\/playbooks\/bb6fe039-3e49-4091-b4f0-73bd492a4693",
                     "preCreateMessage": "Creating demo record for IOC Processing Email alert",
                     "postCreateMessage": "",
                     "waitTimeforNextStep": "0"

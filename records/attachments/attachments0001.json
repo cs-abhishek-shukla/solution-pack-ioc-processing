@@ -3,7 +3,7 @@
         "@type": "Attachment",
         "name": "IOC from Email",
         "description": "This file contains IOCs which needs to be processed further for investigation.",
-        "file": "\/api\/3\/files\/2f6073ae-1ee3-4752-a282-165303a7638d",
+        "file": "\/api\/3\/files\/b9556d9a-040f-4c32-b84b-4f867f69aaad",
         "type": "\/api\/3\/picklists\/76d53137-a3ad-4afc-93af-205b88e59b63",
         "uuid": "a6a0f568-26d6-40c8-9733-c2755342c379",
         "createUser": "\/api\/3\/appliances\/57545210-2adc-472b-a24f-2df6ee8dfe63",

@@ -20,27 +20,17 @@
         }
     ],
     "prerequisite": null,
-    "publisher": "FortiSOAR",
+    "publisher": "Fortinet FortiSOAR",
     "description": "This solution pack will help to process the IOCs from the Alert attachments.",
     "help": null,
     "category": [
-        "Threat Intelligence"
+        "Network Security"
     ],
     "supportInfo": null,
     "iconLarge": null,
     "postInstallConfig": null,
     "date": "",
     "contents": {
-        "modules": {
-            "attachments": {
-                "name": "Attachments",
-                "apiName": "attachments"
-            },
-            "scenario": {
-                "name": "Scenario",
-                "apiName": "scenario"
-            }
-        },
         "viewTemplates": {
             "scenario": {
                 "name": "Scenario",
@@ -55,9 +45,6 @@
         "playbooks": [
             {
                 "name": "10 - SP - IOC Processing"
-            },
-            {
-                "name": "04 - Actions"
             }
         ],
         "connectors": [

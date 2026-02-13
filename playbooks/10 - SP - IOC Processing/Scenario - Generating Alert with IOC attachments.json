@@ -12,9 +12,9 @@
     "remoteExecutableFlag": false,
     "parameters": [],
     "synchronous": false,
-    "collection": "\/api\/3\/workflow_collections\/cb72749c-c756-4a48-abc6-ba857c6c4dd5",
+    "collection": "\/api\/3\/workflow_collections\/503bb002-2dc4-4885-a68f-761e098d4414",
     "versions": [],
-    "triggerStep": "\/api\/3\/workflow_steps\/b0eba58f-6cde-4508-9479-05138c784c4b",
+    "triggerStep": "\/api\/3\/workflow_steps\/6abb1518-b2f8-4217-9690-8fe6e6ea9560",
     "steps": [
         {
             "@type": "WorkflowStep",
@@ -28,7 +28,34 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
-            "uuid": "5bcb57b1-1a13-44c8-b32b-b28cba175fe6"
+            "uuid": "40f68db6-d9aa-4f91-8740-58d822edaa25"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Attachment Record",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "file": "{{vars.file_iri}}",
+                    "name": "IOCs to Process",
+                    "type": "\/api\/3\/picklists\/76d53137-a3ad-4afc-93af-205b88e59b63",
+                    "__replace": "",
+                    "description": "This file contains IOCs which needs to be processed further for investigation."
+                },
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/attachments",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "570",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "975dfcf7-d614-4d80-9fbe-8838bbd8bbc9"
         },
         {
             "@type": "WorkflowStep",
@@ -36,13 +63,12 @@
             "description": null,
             "arguments": {
                 "resource": {
-                    "beta": false,
                     "name": "IOC Processing",
-                    "raised": "\/api\/3\/picklists\/5434ed03-11ab-4652-ac72-bdfaf0e91ef5",
+                    "type": "\/api\/3\/picklists\/574a6ee2-7265-4701-815e-cff83b053bce",
+                    "state": "\/api\/3\/picklists\/a1bac09b-1441-45aa-ad1b-c88744e48e72",
                     "status": "\/api\/3\/picklists\/7de816ff-7140-4ee5-bd05-93ce22002146",
+                    "severity": "\/api\/3\/picklists\/58d0753f-f7e4-403b-953c-b0f521eab759",
                     "__replace": "true",
-                    "spotCheck": false,
-                    "attachments": "{{vars.attachment_iri}}",
                     "ackSlaStatus": "\/api\/3\/picklists\/72979f64-e8b9-4888-a965-957e0ec24818",
                     "respSlaStatus": "\/api\/3\/picklists\/72979f64-e8b9-4888-a965-957e0ec24818",
                     "priorityWeight": 1,
@@ -60,23 +86,43 @@
                 "step_variables": []
             },
             "status": null,
-            "top": "435",
+            "top": "300",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
             "group": null,
-            "uuid": "c902fdd2-200a-48df-8a65-f88704f61ca6"
+            "uuid": "7ac1d28e-3e49-480a-81fd-6c1e1f16fc03"
         },
         {
             "@type": "WorkflowStep",
-            "name": "Field Mapping",
+            "name": "Get the Attachment Record",
             "description": null,
-            "arguments": [],
+            "arguments": {
+                "query": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "primitive",
+                            "field": "uuid",
+                            "value": "{{vars.attachment_iri | split('\/') | last}}",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        }
+                    ]
+                },
+                "module": "attachments?$limit=30&$relationships=true&$fsr_max_relation_count=10",
+                "checkboxFields": true,
+                "step_variables": {
+                    "file_iri": "{{vars.steps.Get_the_Attachment_Record[0].file['@id']}}"
+                }
+            },
             "status": null,
-            "top": "300",
+            "top": "435",
             "left": "125",
-            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
             "group": null,
-            "uuid": "d141edcf-8342-4fc7-8962-5404339d629b"
+            "uuid": "331bc0ab-e992-41bb-b8da-328cddf05942"
         },
         {
             "@type": "WorkflowStep",
@@ -86,11 +132,11 @@
                 "recordIRIs": "{{vars.steps.Create_Email_Alert['@id'], vars.attachment_iri}}"
             },
             "status": null,
-            "top": "570",
+            "top": "840",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
-            "uuid": "f3a2cb9c-dd44-4fd0-98dc-b6c8716520b1"
+            "uuid": "a3d92418-c1da-4186-8e26-542b6e5834d8"
         },
         {
             "@type": "WorkflowStep",
@@ -108,56 +154,100 @@
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/b348f017-9a94-471f-87f8-ce88b6a7ad62",
             "group": null,
-            "uuid": "b0eba58f-6cde-4508-9479-05138c784c4b"
+            "uuid": "6abb1518-b2f8-4217-9690-8fe6e6ea9560"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Update Alert",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "__link": {
+                        "attachments": "{{vars.steps.Create_Attachment_Record['@id']}}"
+                    }
+                },
+                "operation": "Append",
+                "collection": "{{vars.steps.Create_Email_Alert['@id']}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/alerts",
+                "fieldOperation": [],
+                "step_variables": []
+            },
+            "status": null,
+            "top": "705",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": null,
+            "uuid": "6e3e2527-2d07-41cc-bc4b-f59d1ac6bb87"
         }
     ],
     "routes": [
         {
             "@type": "WorkflowRoute",
-            "name": "Configuration -> Field Mapping",
-            "targetStep": "\/api\/3\/workflow_steps\/d141edcf-8342-4fc7-8962-5404339d629b",
-            "sourceStep": "\/api\/3\/workflow_steps\/5bcb57b1-1a13-44c8-b32b-b28cba175fe6",
+            "name": "Configuration -> Create Email Alert",
+            "targetStep": "\/api\/3\/workflow_steps\/7ac1d28e-3e49-480a-81fd-6c1e1f16fc03",
+            "sourceStep": "\/api\/3\/workflow_steps\/40f68db6-d9aa-4f91-8740-58d822edaa25",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "bfb13b5e-bcae-4e9b-8c6f-33be59ea4e75"
+            "uuid": "b0bde281-0ab0-48c3-bff9-0c03fb863dc1"
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Create Email Alert -> Return Record IRI",
-            "targetStep": "\/api\/3\/workflow_steps\/f3a2cb9c-dd44-4fd0-98dc-b6c8716520b1",
-            "sourceStep": "\/api\/3\/workflow_steps\/c902fdd2-200a-48df-8a65-f88704f61ca6",
+            "name": "Create Attachment Record -> Update Alert",
+            "targetStep": "\/api\/3\/workflow_steps\/6e3e2527-2d07-41cc-bc4b-f59d1ac6bb87",
+            "sourceStep": "\/api\/3\/workflow_steps\/975dfcf7-d614-4d80-9fbe-8838bbd8bbc9",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "ba15e9e9-8185-463c-ac92-c77c383ff99b"
+            "uuid": "391f321b-6ac4-42b1-bd0f-9673ba9753e4"
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Field Mapping -> Create Email Alert",
-            "targetStep": "\/api\/3\/workflow_steps\/c902fdd2-200a-48df-8a65-f88704f61ca6",
-            "sourceStep": "\/api\/3\/workflow_steps\/d141edcf-8342-4fc7-8962-5404339d629b",
+            "name": "Create Email Alert -> Get the Attachment Record",
+            "targetStep": "\/api\/3\/workflow_steps\/331bc0ab-e992-41bb-b8da-328cddf05942",
+            "sourceStep": "\/api\/3\/workflow_steps\/7ac1d28e-3e49-480a-81fd-6c1e1f16fc03",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "67550543-737d-47aa-8cb0-c8c980bd09de"
+            "uuid": "0dd7e502-e194-488d-9019-03a38cbaff8c"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get the Attachment Record -> Copy 2 of Create Attachment Record",
+            "targetStep": "\/api\/3\/workflow_steps\/975dfcf7-d614-4d80-9fbe-8838bbd8bbc9",
+            "sourceStep": "\/api\/3\/workflow_steps\/331bc0ab-e992-41bb-b8da-328cddf05942",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "2237d2ef-b120-4380-9a17-6e9e5a20e1af"
         },
         {
             "@type": "WorkflowRoute",
             "name": "Start -> Configuration",
-            "targetStep": "\/api\/3\/workflow_steps\/5bcb57b1-1a13-44c8-b32b-b28cba175fe6",
-            "sourceStep": "\/api\/3\/workflow_steps\/b0eba58f-6cde-4508-9479-05138c784c4b",
+            "targetStep": "\/api\/3\/workflow_steps\/40f68db6-d9aa-4f91-8740-58d822edaa25",
+            "sourceStep": "\/api\/3\/workflow_steps\/6abb1518-b2f8-4217-9690-8fe6e6ea9560",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "9928e5f1-dabb-4fd7-b82f-1bea9435a15c"
+            "uuid": "30a895b1-032a-4a49-b02b-b190ffebe348"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Update Alert -> Return Record IRI",
+            "targetStep": "\/api\/3\/workflow_steps\/a3d92418-c1da-4186-8e26-542b6e5834d8",
+            "sourceStep": "\/api\/3\/workflow_steps\/6e3e2527-2d07-41cc-bc4b-f59d1ac6bb87",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "175539eb-fbcb-4d69-bd4d-976f054a2605"
         }
     ],
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
     "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
-    "isEditable": false,
-    "uuid": "cadb928d-3500-43fc-8bf2-5a32188575d2",
+    "isEditable": true,
+    "uuid": "bb6fe039-3e49-4091-b4f0-73bd492a4693",
     "owners": [],
     "isPrivate": false,
     "deletedAt": null,
