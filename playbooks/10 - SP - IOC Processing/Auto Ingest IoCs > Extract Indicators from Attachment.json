@@ -1,5 +1,4 @@
 {
-    "@context": "\/api\/3\/contexts\/Workflow",
     "@type": "Workflow",
     "triggerLimit": null,
     "name": "Auto Ingest IoCs > Extract Indicators from Attachment",
@@ -97,8 +96,11 @@
                     "condition": ""
                 },
                 "arguments": {
+                    "tlp": "{{vars.steps.Select_Actions_on_IoCs.input.tLP}}",
                     "data": "{{vars.fetched_indicators}}",
                     "ioc_type": "{{vars.item}}",
+                    "confidence": "{{vars.steps.Select_Actions_on_IoCs.input.confidence}}",
+                    "reputation": "{{vars.steps.Select_Actions_on_IoCs.input.reputation}}",
                     "ioc_blocked": "true"
                 },
                 "apply_async": false,
@@ -466,6 +468,7 @@
                     "options": [
                         {
                             "option": "Proceed",
+                            "primary": true,
                             "step_iri": "\/api\/3\/workflow_steps\/2a5b06e2-57eb-4531-9e30-391e5e4a18be"
                         }
                     ],
@@ -624,7 +627,7 @@
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
     "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
-    "isEditable": true,
+    "isEditable": false,
     "uuid": "8d23cf2d-4f09-431f-af77-b14574851e2a",
     "owners": [],
     "isPrivate": false,

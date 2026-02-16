@@ -1,5 +1,4 @@
 {
-    "@context": "\/api\/3\/contexts\/Workflow",
     "@type": "Workflow",
     "triggerLimit": null,
     "name": "Scenario - Generating Alert with IOC attachments",
@@ -21,7 +20,7 @@
             "name": "Configuration",
             "description": null,
             "arguments": {
-                "attachment_iri": "\/api\/3\/attachments\/a6a0f568-26d6-40c8-9733-c2755342c379"
+                "file_content": "\"185.242.226.0\n103.102.230.0\n80.75.212.0\n78.128.113.0\n167.94.138.0\n193.163.125.0\ntest.com\ntest1.com\ntest2.com\nhttps:\/\/example.com\nhttps:\/\/example.org\nhttps:\/\/myapp.com\nhttps:\/\/secureapi.tech\""
             },
             "status": null,
             "top": "165",
@@ -29,33 +28,6 @@
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
             "uuid": "40f68db6-d9aa-4f91-8740-58d822edaa25"
-        },
-        {
-            "@type": "WorkflowStep",
-            "name": "Create Attachment Record",
-            "description": null,
-            "arguments": {
-                "resource": {
-                    "file": "{{vars.file_iri}}",
-                    "name": "IOCs to Process",
-                    "type": "\/api\/3\/picklists\/76d53137-a3ad-4afc-93af-205b88e59b63",
-                    "__replace": "",
-                    "description": "This file contains IOCs which needs to be processed further for investigation."
-                },
-                "operation": "Overwrite",
-                "collection": "\/api\/3\/attachments",
-                "__recommend": [],
-                "fieldOperation": {
-                    "recordTags": "Overwrite"
-                },
-                "step_variables": []
-            },
-            "status": null,
-            "top": "570",
-            "left": "125",
-            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
-            "group": null,
-            "uuid": "975dfcf7-d614-4d80-9fbe-8838bbd8bbc9"
         },
         {
             "@type": "WorkflowStep",
@@ -94,42 +66,59 @@
         },
         {
             "@type": "WorkflowStep",
-            "name": "Get the Attachment Record",
+            "name": "Create File From String",
             "description": null,
             "arguments": {
-                "query": {
-                    "sort": [],
-                    "limit": 30,
-                    "logic": "AND",
-                    "filters": [
-                        {
-                            "type": "primitive",
-                            "field": "uuid",
-                            "value": "{{vars.attachment_iri | split('\/') | last}}",
-                            "operator": "eq",
-                            "_operator": "eq"
-                        }
-                    ]
+                "params": {
+                    "contents": "{{vars.file_content}}",
+                    "filename": "test_ioc",
+                    "mimetype": "text\/plain"
                 },
-                "module": "attachments?$limit=30&$relationships=true&$fsr_max_relation_count=10",
-                "checkboxFields": true,
-                "step_variables": {
-                    "file_iri": "{{vars.steps.Get_the_Attachment_Record[0].file['@id']}}"
-                }
+                "version": "3.7.0",
+                "connector": "cyops_utilities",
+                "operation": "create_file_from_string",
+                "operationTitle": "File: Create File from String",
+                "step_variables": []
             },
             "status": null,
             "top": "435",
             "left": "125",
-            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
             "group": null,
-            "uuid": "331bc0ab-e992-41bb-b8da-328cddf05942"
+            "uuid": "0d47f7f1-3409-4d92-abaf-1393299a5b13"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create the Attachment Record",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "name": "IOCs to Process",
+                    "filename": "\/tmp\/{{vars.steps.Create_File_From_String.data.filename}}",
+                    "description": "This file includes test IoCs intended to simulate scenarios for the IoC Processing Solution Pack. The provided IOCs can be further processed as part of investigation workflows.",
+                    "request_headers": "",
+                    "multipart_headers": "",
+                    "extra_multipart_fields": ""
+                },
+                "version": "3.7.0",
+                "connector": "cyops_utilities",
+                "operation": "create_cyops_attachment",
+                "operationTitle": "File: Create Attachment from File",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "570",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": null,
+            "uuid": "f1043563-cc50-4b97-8fda-5e1b2137ddf0"
         },
         {
             "@type": "WorkflowStep",
             "name": "Return Record IRI",
             "description": null,
             "arguments": {
-                "recordIRIs": "{{vars.steps.Create_Email_Alert['@id'], vars.attachment_iri}}"
+                "recordIRIs": "{{vars.steps.Create_Email_Alert['@id'], vars.steps.Create_the_Attachment_Record.data['@id']}}"
             },
             "status": null,
             "top": "840",
@@ -163,14 +152,17 @@
             "arguments": {
                 "resource": {
                     "__link": {
-                        "attachments": "{{vars.steps.Create_Attachment_Record['@id']}}"
+                        "attachments": "{{vars.steps.Create_the_Attachment_Record.data['@id']}}"
                     }
                 },
                 "operation": "Append",
                 "collection": "{{vars.steps.Create_Email_Alert['@id']}}",
                 "__recommend": [],
                 "collectionType": "\/api\/3\/alerts",
-                "fieldOperation": [],
+                "fieldOperation": {
+                    "automation": "Append",
+                    "enrichmentState": "Append"
+                },
                 "step_variables": []
             },
             "status": null,
@@ -194,33 +186,33 @@
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Create Attachment Record -> Update Alert",
-            "targetStep": "\/api\/3\/workflow_steps\/6e3e2527-2d07-41cc-bc4b-f59d1ac6bb87",
-            "sourceStep": "\/api\/3\/workflow_steps\/975dfcf7-d614-4d80-9fbe-8838bbd8bbc9",
+            "name": "Create Attachment Record -> create file",
+            "targetStep": "\/api\/3\/workflow_steps\/f1043563-cc50-4b97-8fda-5e1b2137ddf0",
+            "sourceStep": "\/api\/3\/workflow_steps\/0d47f7f1-3409-4d92-abaf-1393299a5b13",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "391f321b-6ac4-42b1-bd0f-9673ba9753e4"
+            "uuid": "3f37c185-0cc2-4a78-a4dd-131023955926"
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Create Email Alert -> Get the Attachment Record",
-            "targetStep": "\/api\/3\/workflow_steps\/331bc0ab-e992-41bb-b8da-328cddf05942",
+            "name": "Create Email Alert -> Create Attachment Record_",
+            "targetStep": "\/api\/3\/workflow_steps\/0d47f7f1-3409-4d92-abaf-1393299a5b13",
             "sourceStep": "\/api\/3\/workflow_steps\/7ac1d28e-3e49-480a-81fd-6c1e1f16fc03",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "0dd7e502-e194-488d-9019-03a38cbaff8c"
+            "uuid": "944307d0-0082-4eb7-9e15-d9f78f98f207"
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Get the Attachment Record -> Copy 2 of Create Attachment Record",
-            "targetStep": "\/api\/3\/workflow_steps\/975dfcf7-d614-4d80-9fbe-8838bbd8bbc9",
-            "sourceStep": "\/api\/3\/workflow_steps\/331bc0ab-e992-41bb-b8da-328cddf05942",
+            "name": "create file -> Update Alert",
+            "targetStep": "\/api\/3\/workflow_steps\/6e3e2527-2d07-41cc-bc4b-f59d1ac6bb87",
+            "sourceStep": "\/api\/3\/workflow_steps\/f1043563-cc50-4b97-8fda-5e1b2137ddf0",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "2237d2ef-b120-4380-9a17-6e9e5a20e1af"
+            "uuid": "80a2a3fa-8f07-4689-9a1d-583ba257745e"
         },
         {
             "@type": "WorkflowRoute",
@@ -246,7 +238,7 @@
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
     "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
-    "isEditable": true,
+    "isEditable": false,
     "uuid": "bb6fe039-3e49-4091-b4f0-73bd492a4693",
     "owners": [],
     "isPrivate": false,

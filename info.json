@@ -31,17 +31,6 @@
     "postInstallConfig": null,
     "date": "",
     "contents": {
-        "viewTemplates": {
-            "scenario": {
-                "name": "Scenario",
-                "apiName": "scenario",
-                "views": [
-                    "form",
-                    "detail",
-                    "list"
-                ]
-            }
-        },
         "playbooks": [
             {
                 "name": "10 - SP - IOC Processing"
@@ -54,11 +43,6 @@
             }
         ],
         "recordSets": [
-            {
-                "name": "Attachments",
-                "apiName": "attachments",
-                "count": 1
-            },
             {
                 "name": "Scenario",
                 "apiName": "scenario",
