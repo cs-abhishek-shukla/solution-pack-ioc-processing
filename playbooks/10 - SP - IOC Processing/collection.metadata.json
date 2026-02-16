@@ -1,0 +1,11 @@
+{
+    "@context": "\/api\/3\/contexts\/WorkflowCollection",
+    "@type": "WorkflowCollection",
+    "name": "10 - SP - IOC Processing",
+    "description": null,
+    "visible": true,
+    "image": null,
+    "uuid": "503bb002-2dc4-4885-a68f-761e098d4414",
+    "deletedAt": null,
+    "recordTags": []
+}

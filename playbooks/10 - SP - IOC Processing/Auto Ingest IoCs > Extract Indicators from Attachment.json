@@ -1,0 +1,639 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Auto Ingest IoCs > Extract Indicators from Attachment",
+    "aliasName": null,
+    "tag": null,
+    "description": "This playbook will extract the indicators from attachment.",
+    "isActive": true,
+    "debug": false,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [
+        "attachment_uuid"
+    ],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/503bb002-2dc4-4885-a68f-761e098d4414",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/529c41e1-93c2-45ab-a784-799e4b7fd248",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Block IOC or not",
+            "description": null,
+            "arguments": {
+                "conditions": [
+                    {
+                        "option": "Reject",
+                        "default": true,
+                        "step_iri": "\/api\/3\/workflow_steps\/ac39a332-3b23-4479-af92-eede9270131e",
+                        "step_name": "Reject"
+                    },
+                    {
+                        "option": "Auto Block",
+                        "step_iri": "\/api\/3\/workflow_steps\/31045e4f-a51e-4ba8-8ac7-9c4625f1e800",
+                        "condition": "{{ vars.steps.Select_Actions_on_IoCs.input.actionOnExtractedIoCs == \"Block Automatically\" }}",
+                        "step_name": "Create IoC from File"
+                    },
+                    {
+                        "option": "Manual Block",
+                        "step_iri": "\/api\/3\/workflow_steps\/4a07bb16-9a12-4d4a-8f48-b9fb2d344a8a",
+                        "condition": "{{ vars.steps.Select_Actions_on_IoCs.input.actionOnExtractedIoCs == \"Block Manually\" }}",
+                        "step_name": "Create Ioc Records"
+                    }
+                ],
+                "step_variables": []
+            },
+            "status": null,
+            "top": "975",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/12254cf5-5db7-4b1a-8cb1-3af081924b28",
+            "group": null,
+            "uuid": "2a5b06e2-57eb-4531-9e30-391e5e4a18be"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block IoCs",
+            "description": null,
+            "arguments": {
+                "arguments": {
+                    "batchSize": "500",
+                    "threatFeeds": "{{vars.fetched_indicators}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": false,
+                "workflowReference": "\/api\/3\/workflows\/7fcbdbb5-1eec-4f1b-93c6-988451611c37"
+            },
+            "status": null,
+            "top": "1245",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "c05092a9-538d-46ce-b555-8d4b971da2a8"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": [],
+            "status": null,
+            "top": "165",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "2371638a-ed2b-47d8-b909-74c3dd75bef9"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create IoC from File",
+            "description": null,
+            "arguments": {
+                "for_each": {
+                    "item": "{{vars.fetched_indicators.keys() | list}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "tlp": "{{vars.steps.Select_Actions_on_IoCs.input.tLP}}",
+                    "data": "{{vars.fetched_indicators}}",
+                    "ioc_type": "{{vars.item}}",
+                    "confidence": "{{vars.steps.Select_Actions_on_IoCs.input.confidence}}",
+                    "reputation": "{{vars.steps.Select_Actions_on_IoCs.input.reputation}}",
+                    "ioc_blocked": "true"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": false,
+                "workflowReference": "\/api\/3\/workflows\/ddeedd5e-a23c-473b-ac85-d8466bebf9c0"
+            },
+            "status": null,
+            "top": "1110",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "31045e4f-a51e-4ba8-8ac7-9c4625f1e800"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Ioc Records",
+            "description": null,
+            "arguments": {
+                "for_each": {
+                    "item": "{{vars.fetched_indicators.keys() | list}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "arguments": {
+                    "tlp": "{{vars.steps.Select_Actions_on_IoCs.input.tLP}}",
+                    "data": "{{vars.fetched_indicators}}",
+                    "ioc_type": "{{vars.item}}",
+                    "confidence": "{{vars.steps.Select_Actions_on_IoCs.input.confidence}}",
+                    "reputation": "{{vars.steps.Select_Actions_on_IoCs.input.reputation}}",
+                    "ioc_blocked": "false"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": false,
+                "workflowReference": "\/api\/3\/workflows\/ddeedd5e-a23c-473b-ac85-d8466bebf9c0"
+            },
+            "status": null,
+            "top": "1110",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "4a07bb16-9a12-4d4a-8f48-b9fb2d344a8a"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Extract IoCs From File",
+            "description": null,
+            "arguments": {
+                "name": "File Content Extraction",
+                "params": {
+                    "file_iri": "{{vars.item}}"
+                },
+                "version": "1.3.1",
+                "for_each": {
+                    "item": "{{vars.file_iris}}",
+                    "parallel": false,
+                    "condition": ""
+                },
+                "connector": "file-content-extraction",
+                "operation": "extract_indicators_from_file",
+                "operationTitle": "Extract Artifacts Extended",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "570",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "92b513a0-7b29-43d7-821e-d596e81a4e33"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get File IRIs",
+            "description": null,
+            "arguments": {
+                "file_iris": "{% set files = [] %}\n{% for item in vars.steps.Get_the_Attachment %}\n    {% set _ = files.append(item.file['@id']) %}\n{% endfor %}\n{{ files }}"
+            },
+            "status": null,
+            "top": "435",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "9b763eb2-5558-48b3-8a1d-12ccecf98821"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get IoCs List",
+            "description": null,
+            "arguments": {
+                "total_iocs": "{% set ns = namespace(total_feeds=0) %}\n\n{% for item in vars.steps.Extract_IoCs_From_File %}\n    {% for indicator_type, indicators in item.data.items() %}\n        {% set ns.total_feeds = ns.total_feeds + (indicators | length) %}\n    {% endfor %}\n{% endfor %}\n\n{{ ns.total_feeds }}",
+                "fetched_indicators": "{% set ns = namespace(merged={}) %}\n\n{% for item in vars.steps.Extract_IoCs_From_File | default([]) %}\n    {% for indicator_type in item.data | default({}) %}\n        {% set indicators = item.data[indicator_type] | default([]) %}\n\n        {% if indicator_type not in ns.merged %}\n            {% set _ = ns.merged.update({ indicator_type: [] }) %}\n        {% endif %}\n\n        {% for ioc in indicators %}\n            {% if ioc not in ns.merged[indicator_type] %}\n                {% set _ = ns.merged[indicator_type].append(ioc) %}\n            {% endif %}\n        {% endfor %}\n\n    {% endfor %}\n{% endfor %}\n\n{{ ns.merged }}"
+            },
+            "status": null,
+            "top": "705",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "60b62665-23fe-4d35-8e69-0d078c803879"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get the Attachment",
+            "description": null,
+            "arguments": {
+                "query": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "primitive",
+                            "field": "uuid",
+                            "value": "{{vars.input.params['attachment_uuid']}}",
+                            "operator": "in",
+                            "_operator": "in"
+                        }
+                    ]
+                },
+                "module": "attachments?$limit=30",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
+            "group": null,
+            "uuid": "fd051471-0fc1-4e7f-9554-78c306b6023f"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Reject",
+            "description": null,
+            "arguments": {
+                "params": [],
+                "version": "3.7.0",
+                "connector": "cyops_utilities",
+                "operation": "no_op",
+                "operationTitle": "Utils: No Operation",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1110",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": null,
+            "uuid": "ac39a332-3b23-4479-af92-eede9270131e"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Select Actions on IoCs",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Indicators Details",
+                        "description": "<html>\n<p style=\"font-family:verdana;\">Dear Team,<\/p>\n<p style=\"font-family:verdana;\">Please review the extracted indicators and select the action to be performed:<\/b><\/p>\n\n<head>\n<style>\ntable, th, td {\n  border: 1px solid;\n}\n<\/style>\n<\/head>\n<body>\n<table>\n<tr>\n<th style=\"background-color:teal;color:white;\">Type<\/th>\n<th style=\"background-color:teal;color:white;\">Value <\/th>\n<\/tr>\n{% for k, v in vars.fetched_indicators.items() %}\n<tr>\n<td>{{k}}<\/td>\n<td>{{v | join(\", \") | wordwrap(100)}}<\/td>\n<\/tr>\n{% endfor %}\n<\/table>\n<\/body>\n<\/html>\n",
+                        "inputVariables": [
+                            {
+                                "name": "actionOnExtractedIoCs",
+                                "type": "array",
+                                "label": "Action on Extracted IoCs",
+                                "title": "Dynamic List",
+                                "usable": true,
+                                "options": [
+                                    "Block Automatically",
+                                    "Block Manually",
+                                    "Reject"
+                                ],
+                                "tooltip": "",
+                                "dataType": "dynamicList",
+                                "formType": "dynamicList",
+                                "required": false,
+                                "_expanded": true,
+                                "mmdUpdate": true,
+                                "collection": false,
+                                "searchable": false,
+                                "templateUrl": "app\/components\/form\/fields\/dynamicList.html",
+                                "defaultValue": "Reject",
+                                "_previousName": "actionOnExtractedIoCs",
+                                "playbookField": true,
+                                "lengthConstraint": true,
+                                "allowedGridColumn": false,
+                                "requiredCondition": "notrequired",
+                                "jinjaExpressionView": true,
+                                "useRecordFieldDefault": false,
+                                "_addRequiredConditions": false
+                            },
+                            {
+                                "name": "confidence",
+                                "type": "integer",
+                                "label": "Confidence",
+                                "title": "Integer Field",
+                                "usable": true,
+                                "tooltip": "Specify confidence to be set for these IoCs.",
+                                "dataType": "integer",
+                                "formType": "integer",
+                                "required": false,
+                                "_expanded": true,
+                                "mmdUpdate": true,
+                                "collection": false,
+                                "searchable": true,
+                                "templateUrl": "app\/components\/form\/fields\/integer.html",
+                                "defaultValue": 50,
+                                "_previousName": "confidence",
+                                "playbookField": true,
+                                "visibilityQuery": {
+                                    "sort": [],
+                                    "limit": 30,
+                                    "logic": "AND",
+                                    "filters": [
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
+                                                "Block Automatically",
+                                                "Block Manually"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": "",
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        }
+                                    ]
+                                },
+                                "lengthConstraint": true,
+                                "allowedEncryption": false,
+                                "allowedGridColumn": true,
+                                "requiredCondition": "notrequired",
+                                "jinjaExpressionView": true,
+                                "useRecordFieldDefault": false,
+                                "_addRequiredConditions": false,
+                                "_addVisibilityConditions": true
+                            },
+                            {
+                                "name": "reputation",
+                                "type": "array",
+                                "label": "Reputation",
+                                "title": "Dynamic List",
+                                "usable": true,
+                                "options": [
+                                    "Good",
+                                    "Malicious",
+                                    "Suspicious",
+                                    "TBD",
+                                    "No Reputation Available"
+                                ],
+                                "tooltip": "Select the reputation to apply to these IOCs.",
+                                "dataType": "dynamicList",
+                                "formType": "dynamicList",
+                                "required": false,
+                                "_expanded": true,
+                                "mmdUpdate": true,
+                                "collection": false,
+                                "searchable": false,
+                                "templateUrl": "app\/components\/form\/fields\/dynamicList.html",
+                                "defaultValue": "TBD",
+                                "_previousName": "reputation",
+                                "playbookField": true,
+                                "visibilityQuery": {
+                                    "sort": [],
+                                    "limit": 30,
+                                    "logic": "AND",
+                                    "filters": [
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
+                                                "Block Automatically",
+                                                "Block Manually"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": "",
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        }
+                                    ]
+                                },
+                                "lengthConstraint": true,
+                                "allowedGridColumn": false,
+                                "requiredCondition": "notrequired",
+                                "jinjaExpressionView": true,
+                                "useRecordFieldDefault": false,
+                                "_addRequiredConditions": false,
+                                "_addVisibilityConditions": true
+                            },
+                            {
+                                "name": "tLP",
+                                "type": "array",
+                                "label": "TLP",
+                                "title": "Dynamic List",
+                                "usable": true,
+                                "options": [
+                                    "Red",
+                                    "Amber",
+                                    "Green",
+                                    "White"
+                                ],
+                                "tooltip": "Select the TLP level to apply to these IOCs",
+                                "dataType": "dynamicList",
+                                "formType": "dynamicList",
+                                "required": false,
+                                "_expanded": true,
+                                "mmdUpdate": true,
+                                "collection": false,
+                                "searchable": false,
+                                "templateUrl": "app\/components\/form\/fields\/dynamicList.html",
+                                "defaultValue": "Amber",
+                                "_previousName": "tLP",
+                                "playbookField": true,
+                                "visibilityQuery": {
+                                    "sort": [],
+                                    "limit": 30,
+                                    "logic": "AND",
+                                    "filters": [
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
+                                                "Block Automatically",
+                                                "Block Manually"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": "",
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        }
+                                    ]
+                                },
+                                "lengthConstraint": true,
+                                "allowedGridColumn": false,
+                                "requiredCondition": "notrequired",
+                                "jinjaExpressionView": true,
+                                "useRecordFieldDefault": false,
+                                "_addRequiredConditions": false,
+                                "_addVisibilityConditions": true
+                            }
+                        ]
+                    }
+                },
+                "record": "",
+                "is_approval": false,
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": false,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Proceed",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/2a5b06e2-57eb-4531-9e30-391e5e4a18be"
+                        }
+                    ],
+                    "duplicateOption": false,
+                    "customSuccessMessage": "Awaiting Playbook resumed successfully."
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                },
+                "inline_channel_list": [],
+                "external_channel_list": [],
+                "unauthenticated_input": false
+            },
+            "status": null,
+            "top": "840",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "group": null,
+            "uuid": "1ee37db3-bdca-44ce-9532-0d723484056d"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "__triggerLimit": true,
+                "step_variables": {
+                    "input": {
+                        "params": []
+                    }
+                },
+                "triggerOnSource": true,
+                "triggerOnReplicate": false
+            },
+            "status": null,
+            "top": "30",
+            "left": "475",
+            "stepType": "\/api\/3\/workflow_step_types\/b348f017-9a94-471f-87f8-ce88b6a7ad62",
+            "group": null,
+            "uuid": "529c41e1-93c2-45ab-a784-799e4b7fd248"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Block IOC or not -> Create IoC from File",
+            "targetStep": "\/api\/3\/workflow_steps\/31045e4f-a51e-4ba8-8ac7-9c4625f1e800",
+            "sourceStep": "\/api\/3\/workflow_steps\/2a5b06e2-57eb-4531-9e30-391e5e4a18be",
+            "label": "Auto Block",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "1cd7b31c-a753-4d23-9378-dfbc2a454987"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Block IOC or not -> Create Ioc Records",
+            "targetStep": "\/api\/3\/workflow_steps\/4a07bb16-9a12-4d4a-8f48-b9fb2d344a8a",
+            "sourceStep": "\/api\/3\/workflow_steps\/2a5b06e2-57eb-4531-9e30-391e5e4a18be",
+            "label": "Manual Block",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "66de958d-da97-4299-a65b-48610d8850fe"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Block IOC or not -> Reject",
+            "targetStep": "\/api\/3\/workflow_steps\/ac39a332-3b23-4479-af92-eede9270131e",
+            "sourceStep": "\/api\/3\/workflow_steps\/2a5b06e2-57eb-4531-9e30-391e5e4a18be",
+            "label": "Reject",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ed8c0858-81d7-400e-a5fb-050710432882"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Get the Attachment",
+            "targetStep": "\/api\/3\/workflow_steps\/fd051471-0fc1-4e7f-9554-78c306b6023f",
+            "sourceStep": "\/api\/3\/workflow_steps\/2371638a-ed2b-47d8-b909-74c3dd75bef9",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ac7c990d-b39f-4d60-96a1-e04d25da0967"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Indicators from File -> Block Indicators",
+            "targetStep": "\/api\/3\/workflow_steps\/c05092a9-538d-46ce-b555-8d4b971da2a8",
+            "sourceStep": "\/api\/3\/workflow_steps\/31045e4f-a51e-4ba8-8ac7-9c4625f1e800",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "7791decc-2a4e-4b6b-a7b2-68c108677cd9"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Extract Indicators From File -> Get Indicators",
+            "targetStep": "\/api\/3\/workflow_steps\/60b62665-23fe-4d35-8e69-0d078c803879",
+            "sourceStep": "\/api\/3\/workflow_steps\/92b513a0-7b29-43d7-821e-d596e81a4e33",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "8e4d994d-7449-4195-b92e-23c6e44e44ab"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get File IRIs -> Extract Indicators From File",
+            "targetStep": "\/api\/3\/workflow_steps\/92b513a0-7b29-43d7-821e-d596e81a4e33",
+            "sourceStep": "\/api\/3\/workflow_steps\/9b763eb2-5558-48b3-8a1d-12ccecf98821",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "9150fcab-e297-476f-8a8b-6a9f0fcf3ba8"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Indicators -> Get input",
+            "targetStep": "\/api\/3\/workflow_steps\/1ee37db3-bdca-44ce-9532-0d723484056d",
+            "sourceStep": "\/api\/3\/workflow_steps\/60b62665-23fe-4d35-8e69-0d078c803879",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "3805fb9d-ecde-444b-b644-cb1f10ec088d"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get the Attachment -> Get File IRIs",
+            "targetStep": "\/api\/3\/workflow_steps\/9b763eb2-5558-48b3-8a1d-12ccecf98821",
+            "sourceStep": "\/api\/3\/workflow_steps\/fd051471-0fc1-4e7f-9554-78c306b6023f",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "a333d120-20ff-49ea-982f-f6fab0fd2528"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Select Actions on IoCs -> Block IOC or not",
+            "targetStep": "\/api\/3\/workflow_steps\/2a5b06e2-57eb-4531-9e30-391e5e4a18be",
+            "sourceStep": "\/api\/3\/workflow_steps\/1ee37db3-bdca-44ce-9532-0d723484056d",
+            "label": "Proceed",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "df2cab04-8c15-40a9-b571-399e2fa3d199"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/2371638a-ed2b-47d8-b909-74c3dd75bef9",
+            "sourceStep": "\/api\/3\/workflow_steps\/529c41e1-93c2-45ab-a784-799e4b7fd248",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "eb280fed-821e-4c65-92de-5b730e754087"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": false,
+    "uuid": "8d23cf2d-4f09-431f-af77-b14574851e2a",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "Extract IoCs",
+        "Subroutine"
+    ]
+}
