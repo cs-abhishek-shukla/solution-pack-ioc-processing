@@ -5,6 +5,7 @@
     "type": "solutionpack",
     "local": true,
     "label": "IOC Processing",
+    "certified": true,
     "dependencies": [
         {
             "name": "sOARFramework",
@@ -20,9 +21,9 @@
         }
     ],
     "prerequisite": null,
-    "publisher": "Fortinet FortiSOAR",
+    "publisher": "Fortinet",
     "description": "This solution pack will help to process the IOCs from the Alert attachments.",
-    "help": null,
+    "help": "https://github.com/fortinet-fortisoar/solution-pack-ioc-processing/blob/release/1.0.0/README.md",
     "category": [
         "Network Security"
     ],
