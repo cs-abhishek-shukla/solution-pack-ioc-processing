@@ -1,0 +1,199 @@
+{
+    "@context": "\/api\/3\/contexts\/Workflow",
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Auto IoC Ingest - Review and Send Block to Devices",
+    "aliasName": null,
+    "tag": null,
+    "description": "This playbook will ingest the indicators from attached file and will block it to devices.",
+    "isActive": true,
+    "debug": false,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/503bb002-2dc4-4885-a68f-761e098d4414",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/31227446-c49c-4631-89e5-73ca01bf451b",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": [],
+            "status": null,
+            "top": "165",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "78fcdb6f-8b6f-47b2-822f-e7fb24846a3f"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Attachment Details",
+            "description": null,
+            "arguments": {
+                "attachment_iri": "{{vars.steps.Get_Attachment_IRI_from_Alert[0].attachments | map(attribute='@id') | list }}",
+                "attachment_uuid": "{{ vars.steps.Get_Attachment_IRI_from_Alert[0].attachments\n   | map(attribute='@id')\n   | map('replace', '\/api\/3\/attachments\/', '')\n   | list }}"
+            },
+            "status": null,
+            "top": "435",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "e0f03053-2de6-4b16-a301-e0747d83a19d"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Attachment IRI from Alert",
+            "description": null,
+            "arguments": {
+                "query": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "primitive",
+                            "field": "uuid",
+                            "value": "{{ vars.input.records[0]['@id'] | split('\/') | last }}",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        }
+                    ],
+                    "__selectFields": [
+                        "attachments"
+                    ]
+                },
+                "module": "alerts?$limit=30&$relationships=true&$fsr_max_relation_count=30",
+                "checkboxFields": true,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
+            "group": null,
+            "uuid": "3cfa4d3c-8280-408f-b184-5b3cbb521407"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Process IoCs",
+            "description": null,
+            "arguments": {
+                "arguments": {
+                    "attachment_uuid": "{{vars.attachment_uuid}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": false,
+                "workflowReference": "\/api\/3\/workflows\/8d23cf2d-4f09-431f-af77-b14574851e2a"
+            },
+            "status": null,
+            "top": "570",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "7db3f9d5-2d75-4e10-a2aa-7d0903913377"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "route": "2ffec828-9c78-4a81-a455-b8c77c01a604",
+                "resources": [
+                    "alerts"
+                ],
+                "__triggerLimit": true,
+                "inputVariables": [],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": "{{vars.input.records}}"
+                    }
+                },
+                "_promptexpanded": true,
+                "triggerOnSource": true,
+                "displayConditions": {
+                    "alerts": {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": []
+                    }
+                },
+                "executeButtonText": "Auto IOC Ingest",
+                "noRecordExecution": false,
+                "showToasterMessage": {
+                    "message": "Ingest IoC from the attached file",
+                    "visible": true,
+                    "messageVisible": true
+                },
+                "triggerOnReplicate": false,
+                "singleRecordExecution": false
+            },
+            "status": null,
+            "top": "30",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+            "group": null,
+            "uuid": "31227446-c49c-4631-89e5-73ca01bf451b"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Get Attachment IRI from Alert_",
+            "targetStep": "\/api\/3\/workflow_steps\/3cfa4d3c-8280-408f-b184-5b3cbb521407",
+            "sourceStep": "\/api\/3\/workflow_steps\/78fcdb6f-8b6f-47b2-822f-e7fb24846a3f",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "61fb22bd-9c8f-49b5-a201-6868aed43e7b"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Attachment Details -> Process IoCs",
+            "targetStep": "\/api\/3\/workflow_steps\/7db3f9d5-2d75-4e10-a2aa-7d0903913377",
+            "sourceStep": "\/api\/3\/workflow_steps\/e0f03053-2de6-4b16-a301-e0747d83a19d",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "5635c51a-892f-4ed9-9162-e325313e7043"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Attachment IRI from Alert_ -> Get Attachment Details",
+            "targetStep": "\/api\/3\/workflow_steps\/e0f03053-2de6-4b16-a301-e0747d83a19d",
+            "sourceStep": "\/api\/3\/workflow_steps\/3cfa4d3c-8280-408f-b184-5b3cbb521407",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "b612beaf-2d24-44b8-841d-27c5b0e82966"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> test",
+            "targetStep": "\/api\/3\/workflow_steps\/78fcdb6f-8b6f-47b2-822f-e7fb24846a3f",
+            "sourceStep": "\/api\/3\/workflow_steps\/31227446-c49c-4631-89e5-73ca01bf451b",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "566cc231-06b4-4049-9abe-603d64504046"
+        }
+    ],
+    "groups": [],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
+    "isEditable": false,
+    "uuid": "626c43e7-cd59-4b21-a2c6-2b2be33974d7",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "Extract IoCs",
+        "ManualTrigger"
+    ]
+}
