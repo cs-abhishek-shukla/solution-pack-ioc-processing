@@ -7,7 +7,7 @@
     "tag": null,
     "description": "Create Indicators Form Attachments",
     "isActive": true,
-    "debug": true,
+    "debug": false,
     "singleRecordExecution": false,
     "remoteExecutableFlag": false,
     "parameters": [
