@@ -2,7 +2,7 @@
     "@context": "\/api\/3\/contexts\/Workflow",
     "@type": "Workflow",
     "triggerLimit": null,
-    "name": "Auto IoC Ingest - Review and Send Block to Devices",
+    "name": "Auto IOC Ingest- Review and Send IOC to Block",
     "aliasName": null,
     "tag": null,
     "description": "This playbook will ingest the indicators from attached file and will block it to devices.",
@@ -111,9 +111,18 @@
             "description": null,
             "arguments": {
                 "params": [],
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>This alert has no attachments available for IoC processing.<\/p>",
+                    "records": "{{vars.input.records[0]['@id']}}"
+                },
                 "version": "3.7.0",
                 "connector": "cyops_utilities",
                 "operation": "no_op",
+                "ignore_errors": true,
                 "operationTitle": "Utils: No Operation",
                 "step_variables": []
             },
