@@ -2,7 +2,7 @@
     "@context": "\/api\/3\/contexts\/Workflow",
     "@type": "Workflow",
     "triggerLimit": null,
-    "name": "Auto Ingest IoCs >> Create Indicators from Attachment",
+    "name": "Auto Ingest IoCs >> Create Indicator Records",
     "aliasName": null,
     "tag": null,
     "description": "Create Indicators Form Attachments",

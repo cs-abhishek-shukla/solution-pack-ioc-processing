@@ -18,12 +18,40 @@
     "steps": [
         {
             "@type": "WorkflowStep",
+            "name": "Check Alert Has Attachments",
+            "description": null,
+            "arguments": {
+                "conditions": [
+                    {
+                        "option": "Has Attachments",
+                        "step_iri": "\/api\/3\/workflow_steps\/e0f03053-2de6-4b16-a301-e0747d83a19d",
+                        "condition": "{{ vars.steps.Get_Attachment_IRI_from_Alert[0].attachments | length > 0 }}",
+                        "step_name": "Get Attachment Details"
+                    },
+                    {
+                        "option": "No Attachmnets",
+                        "default": true,
+                        "step_iri": "\/api\/3\/workflow_steps\/b5160005-81ff-41d2-9624-c97908e6c9b3",
+                        "step_name": "No Operation"
+                    }
+                ],
+                "step_variables": []
+            },
+            "status": null,
+            "top": "440",
+            "left": "300",
+            "stepType": "\/api\/3\/workflow_step_types\/12254cf5-5db7-4b1a-8cb1-3af081924b28",
+            "group": null,
+            "uuid": "b36ee0e8-3973-488a-a3db-77d7c75439e9"
+        },
+        {
+            "@type": "WorkflowStep",
             "name": "Configuration",
             "description": null,
             "arguments": [],
             "status": null,
             "top": "165",
-            "left": "125",
+            "left": "300",
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
             "uuid": "78fcdb6f-8b6f-47b2-822f-e7fb24846a3f"
@@ -33,11 +61,10 @@
             "name": "Get Attachment Details",
             "description": null,
             "arguments": {
-                "attachment_iri": "{{vars.steps.Get_Attachment_IRI_from_Alert[0].attachments | map(attribute='@id') | list }}",
                 "attachment_uuid": "{{ vars.steps.Get_Attachment_IRI_from_Alert[0].attachments\n   | map(attribute='@id')\n   | map('replace', '\/api\/3\/attachments\/', '')\n   | list }}"
             },
             "status": null,
-            "top": "435",
+            "top": "570",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
@@ -67,14 +94,35 @@
                 },
                 "module": "alerts?$limit=30&$relationships=true&$fsr_max_relation_count=30",
                 "checkboxFields": true,
-                "step_variables": []
+                "step_variables": {
+                    "has_attachment": "{{vars.steps.Get_Attachment_IRI_from_Alert}}"
+                }
             },
             "status": null,
             "top": "300",
-            "left": "125",
+            "left": "300",
             "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
             "group": null,
             "uuid": "3cfa4d3c-8280-408f-b184-5b3cbb521407"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "No Operation",
+            "description": null,
+            "arguments": {
+                "params": [],
+                "version": "3.7.0",
+                "connector": "cyops_utilities",
+                "operation": "no_op",
+                "operationTitle": "Utils: No Operation",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "560",
+            "left": "480",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": null,
+            "uuid": "b5160005-81ff-41d2-9624-c97908e6c9b3"
         },
         {
             "@type": "WorkflowStep",
@@ -91,7 +139,7 @@
                 "workflowReference": "\/api\/3\/workflows\/8d23cf2d-4f09-431f-af77-b14574851e2a"
             },
             "status": null,
-            "top": "570",
+            "top": "705",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
             "group": null,
@@ -136,13 +184,33 @@
             },
             "status": null,
             "top": "30",
-            "left": "125",
+            "left": "300",
             "stepType": "\/api\/3\/workflow_step_types\/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
             "group": null,
             "uuid": "31227446-c49c-4631-89e5-73ca01bf451b"
         }
     ],
     "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Check whether Alerts has Attachment or not -> Get Attachment Details",
+            "targetStep": "\/api\/3\/workflow_steps\/e0f03053-2de6-4b16-a301-e0747d83a19d",
+            "sourceStep": "\/api\/3\/workflow_steps\/b36ee0e8-3973-488a-a3db-77d7c75439e9",
+            "label": "Has Attachments",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "bcaa1e76-c856-4d70-a366-3eacd135e534"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Check whether Alerts has Attachment or not -> No Operation",
+            "targetStep": "\/api\/3\/workflow_steps\/b5160005-81ff-41d2-9624-c97908e6c9b3",
+            "sourceStep": "\/api\/3\/workflow_steps\/b36ee0e8-3973-488a-a3db-77d7c75439e9",
+            "label": "No Attachmnets",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "05534c01-d416-4671-bc65-e16ed97932ea"
+        },
         {
             "@type": "WorkflowRoute",
             "name": "Configuration -> Get Attachment IRI from Alert_",
@@ -165,13 +233,13 @@
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Get Attachment IRI from Alert_ -> Get Attachment Details",
-            "targetStep": "\/api\/3\/workflow_steps\/e0f03053-2de6-4b16-a301-e0747d83a19d",
+            "name": "Get Attachment IRI from Alert -> Check whether Alerts has Attachment or not",
+            "targetStep": "\/api\/3\/workflow_steps\/b36ee0e8-3973-488a-a3db-77d7c75439e9",
             "sourceStep": "\/api\/3\/workflow_steps\/3cfa4d3c-8280-408f-b184-5b3cbb521407",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "b612beaf-2d24-44b8-841d-27c5b0e82966"
+            "uuid": "08c4f5dd-a4ab-498e-b297-43ea0121eb38"
         },
         {
             "@type": "WorkflowRoute",
