@@ -141,8 +141,9 @@
                 },
                 "arguments": {
                     "tlp": "{{vars.steps.Select_Actions_on_IoCs.input.tLP}}",
-                    "data": "{{vars.fetched_indicators}}",
+                    "data": "{{vars.fetched_indicators[vars.item]}}",
                     "ioc_type": "{{vars.item}}",
+                    "alert_iri": "{{vars.alert_iri}}",
                     "confidence": "{{vars.steps.Select_Actions_on_IoCs.input.confidence}}",
                     "reputation": "{{vars.steps.Select_Actions_on_IoCs.input.reputation}}",
                     "ioc_blocked": "false"
