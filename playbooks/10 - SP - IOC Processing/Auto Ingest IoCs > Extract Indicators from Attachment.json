@@ -10,7 +10,8 @@
     "singleRecordExecution": false,
     "remoteExecutableFlag": false,
     "parameters": [
-        "attachment_uuid"
+        "attachment_uuid",
+        "alert_iri"
     ],
     "synchronous": false,
     "collection": "\/api\/3\/workflow_collections\/503bb002-2dc4-4885-a68f-761e098d4414",
@@ -56,18 +57,27 @@
             "name": "Block IoCs",
             "description": null,
             "arguments": {
+                "when": "{{vars.createIOC | length > 0}}",
+                "for_each": {
+                    "item": "{{vars.createIOC}}",
+                    "__bulk": false,
+                    "parallel": true,
+                    "condition": ""
+                },
                 "arguments": {
-                    "batchSize": "500",
-                    "threatFeeds": "{{vars.fetched_indicators}}"
+                    "indicator_type": "{{vars.item.typeofindicator.itemValue}}",
+                    "indicator_value": "{{vars.item.value}}",
+                    "indicator_record_iri": "{{vars.item['@id']}}",
+                    "indicator_block_reason": "{{vars.steps.Select_Actions_on_IoCs.input.reasonForBlocking}}"
                 },
                 "apply_async": false,
                 "step_variables": [],
                 "pass_parent_env": false,
                 "pass_input_record": false,
-                "workflowReference": "\/api\/3\/workflows\/7fcbdbb5-1eec-4f1b-93c6-988451611c37"
+                "workflowReference": "\/api\/3\/workflows\/1a1cac48-567a-4066-b0d1-c63457226f12"
             },
             "status": null,
-            "top": "1245",
+            "top": "1380",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
             "group": null,
@@ -77,7 +87,9 @@
             "@type": "WorkflowStep",
             "name": "Configuration",
             "description": null,
-            "arguments": [],
+            "arguments": {
+                "alert_iri": "{{vars.input.params['alert_iri']}}"
+            },
             "status": null,
             "top": "165",
             "left": "475",
@@ -97,8 +109,9 @@
                 },
                 "arguments": {
                     "tlp": "{{vars.steps.Select_Actions_on_IoCs.input.tLP}}",
-                    "data": "{{vars.fetched_indicators}}",
+                    "data": "{{vars.fetched_indicators[vars.item]}}",
                     "ioc_type": "{{vars.item}}",
+                    "alert_iri": "{{vars.alert_iri}}",
                     "confidence": "{{vars.steps.Select_Actions_on_IoCs.input.confidence}}",
                     "reputation": "{{vars.steps.Select_Actions_on_IoCs.input.reputation}}",
                     "ioc_blocked": "true"
@@ -174,6 +187,20 @@
             "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
             "group": null,
             "uuid": "92b513a0-7b29-43d7-821e-d596e81a4e33"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Fetch Newly Created IoCs",
+            "description": null,
+            "arguments": {
+                "createIOC": "{{vars.steps.Create_IoC_from_File | map(attribute='iocRecords')|list | flatten(levels=1)}}"
+            },
+            "status": null,
+            "top": "1245",
+            "left": "125",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "fd36a69b-c406-40ce-9069-1c2b89aed419"
         },
         {
             "@type": "WorkflowStep",
@@ -453,6 +480,45 @@
                                 "useRecordFieldDefault": false,
                                 "_addRequiredConditions": false,
                                 "_addVisibilityConditions": true
+                            },
+                            {
+                                "name": "reasonForBlocking",
+                                "type": "string",
+                                "label": "Reason for Blocking",
+                                "tooltip": "",
+                                "dataType": "text",
+                                "formType": "text",
+                                "required": false,
+                                "_expanded": true,
+                                "defaultValue": "Block via FortiSOAR Automation",
+                                "_previousName": "reasonForBl",
+                                "visibilityQuery": {
+                                    "sort": [],
+                                    "limit": 30,
+                                    "logic": "AND",
+                                    "filters": [
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
+                                                "Block Automatically"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": "",
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        }
+                                    ]
+                                },
+                                "requiredCondition": "notrequired",
+                                "jinjaExpressionView": true,
+                                "useRecordFieldDefault": false,
+                                "_addRequiredConditions": true,
+                                "_addVisibilityConditions": true
                             }
                         ]
                     }
@@ -551,17 +617,17 @@
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "ac7c990d-b39f-4d60-96a1-e04d25da0967"
+            "uuid": "e3470faf-d6d6-4a3c-997e-7918801ffb1b"
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Create Indicators from File -> Block Indicators",
-            "targetStep": "\/api\/3\/workflow_steps\/c05092a9-538d-46ce-b555-8d4b971da2a8",
+            "name": "Create IoC from File -> Gather result",
+            "targetStep": "\/api\/3\/workflow_steps\/fd36a69b-c406-40ce-9069-1c2b89aed419",
             "sourceStep": "\/api\/3\/workflow_steps\/31045e4f-a51e-4ba8-8ac7-9c4625f1e800",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "7791decc-2a4e-4b6b-a7b2-68c108677cd9"
+            "uuid": "f5ff516e-5db9-4a3d-bfc2-752eaf0bc3b8"
         },
         {
             "@type": "WorkflowRoute",
@@ -575,6 +641,16 @@
         },
         {
             "@type": "WorkflowRoute",
+            "name": "Gather result -> Block IoCs",
+            "targetStep": "\/api\/3\/workflow_steps\/c05092a9-538d-46ce-b555-8d4b971da2a8",
+            "sourceStep": "\/api\/3\/workflow_steps\/fd36a69b-c406-40ce-9069-1c2b89aed419",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e162683b-9bb8-40da-92eb-4cd95409a924"
+        },
+        {
+            "@type": "WorkflowRoute",
             "name": "Get File IRIs -> Extract Indicators From File",
             "targetStep": "\/api\/3\/workflow_steps\/92b513a0-7b29-43d7-821e-d596e81a4e33",
             "sourceStep": "\/api\/3\/workflow_steps\/9b763eb2-5558-48b3-8a1d-12ccecf98821",
@@ -585,13 +661,13 @@
         },
         {
             "@type": "WorkflowRoute",
-            "name": "Get Indicators -> Get input",
+            "name": "Get IoCs List -> Select Actions on IoCs",
             "targetStep": "\/api\/3\/workflow_steps\/1ee37db3-bdca-44ce-9532-0d723484056d",
             "sourceStep": "\/api\/3\/workflow_steps\/60b62665-23fe-4d35-8e69-0d078c803879",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "3805fb9d-ecde-444b-b644-cb1f10ec088d"
+            "uuid": "51d73147-92f9-4c17-939e-2c867d48202f"
         },
         {
             "@type": "WorkflowRoute",

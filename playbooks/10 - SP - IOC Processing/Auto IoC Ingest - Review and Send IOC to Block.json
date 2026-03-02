@@ -1,5 +1,4 @@
 {
-    "@context": "\/api\/3\/contexts\/Workflow",
     "@type": "Workflow",
     "triggerLimit": null,
     "name": "Auto IOC Ingest- Review and Send IOC to Block",
@@ -48,7 +47,9 @@
             "@type": "WorkflowStep",
             "name": "Configuration",
             "description": null,
-            "arguments": [],
+            "arguments": {
+                "alert_iri": "{{vars.input.records[0]['@id']}}"
+            },
             "status": null,
             "top": "165",
             "left": "300",
@@ -139,6 +140,7 @@
             "description": null,
             "arguments": {
                 "arguments": {
+                    "alert_iri": "{{vars.alert_iri}}",
                     "attachment_uuid": "{{vars.attachment_uuid}}"
                 },
                 "apply_async": false,
