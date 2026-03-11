@@ -65,9 +65,9 @@
                     "condition": ""
                 },
                 "arguments": {
-                    "indicator_type": "{{vars.item.typeofindicator.itemValue}}",
-                    "indicator_value": "{{vars.item.value}}",
-                    "indicator_record_iri": "{{vars.item['@id']}}",
+                    "indicator_type": "{{vars.item.Type}}",
+                    "indicator_value": "{{vars.item.Value}}",
+                    "indicator_record_iri": "{{vars.item.IRI}}",
                     "indicator_block_reason": "{{vars.steps.Select_Actions_on_IoCs.input.reasonForBlocking}}"
                 },
                 "apply_async": false,
@@ -131,7 +131,7 @@
         },
         {
             "@type": "WorkflowStep",
-            "name": "Create Ioc Records",
+            "name": "Create IoC Records",
             "description": null,
             "arguments": {
                 "for_each": {
