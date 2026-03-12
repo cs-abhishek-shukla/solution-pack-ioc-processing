@@ -25,10 +25,10 @@
             "arguments": {
                 "conditions": [
                     {
-                        "option": "Reject",
+                        "option": "Do Not Block",
                         "default": true,
                         "step_iri": "\/api\/3\/workflow_steps\/ac39a332-3b23-4479-af92-eede9270131e",
-                        "step_name": "Reject"
+                        "step_name": "Do Not Block"
                     },
                     {
                         "option": "Auto Block",
@@ -163,6 +163,25 @@
         },
         {
             "@type": "WorkflowStep",
+            "name": "Do Not Block",
+            "description": null,
+            "arguments": {
+                "params": [],
+                "version": "3.7.1",
+                "connector": "cyops_utilities",
+                "operation": "no_op",
+                "operationTitle": "Utils: No Operation",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1110",
+            "left": "825",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": null,
+            "uuid": "ac39a332-3b23-4479-af92-eede9270131e"
+        },
+        {
+            "@type": "WorkflowStep",
             "name": "Extract IoCs From File",
             "description": null,
             "arguments": {
@@ -260,25 +279,6 @@
             "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
             "group": null,
             "uuid": "fd051471-0fc1-4e7f-9554-78c306b6023f"
-        },
-        {
-            "@type": "WorkflowStep",
-            "name": "Reject",
-            "description": null,
-            "arguments": {
-                "params": [],
-                "version": "3.7.0",
-                "connector": "cyops_utilities",
-                "operation": "no_op",
-                "operationTitle": "Utils: No Operation",
-                "step_variables": []
-            },
-            "status": null,
-            "top": "1110",
-            "left": "825",
-            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
-            "group": null,
-            "uuid": "ac39a332-3b23-4479-af92-eede9270131e"
         },
         {
             "@type": "WorkflowStep",
@@ -671,7 +671,7 @@
             "name": "Block IOC or not -> Reject",
             "targetStep": "\/api\/3\/workflow_steps\/ac39a332-3b23-4479-af92-eede9270131e",
             "sourceStep": "\/api\/3\/workflow_steps\/2a5b06e2-57eb-4531-9e30-391e5e4a18be",
-            "label": "Reject",
+            "label": "Do Not Block",
             "isExecuted": false,
             "group": null,
             "uuid": "ed8c0858-81d7-400e-a5fb-050710432882"
@@ -770,7 +770,7 @@
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
     "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
-    "isEditable": true,
+    "isEditable": false,
     "uuid": "8d23cf2d-4f09-431f-af77-b14574851e2a",
     "owners": [],
     "isPrivate": false,
