@@ -62,6 +62,7 @@
                     "__link": {
                         "alerts": "{{vars.alert_iri}}"
                     },
+                    "lastSeen": "{{arrow.utcnow().int_timestamp}}",
                     "__replace": "true",
                     "confidence": "{{vars.input.params.confidence}}",
                     "expiryDate": "{{ arrow.now().int_timestamp + (vars.expiry | int) * 86400 }}",
@@ -161,7 +162,7 @@
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
     "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
-    "isEditable": false,
+    "isEditable": true,
     "uuid": "a524141f-5e5b-4908-a1b7-64e47ecc251b",
     "owners": [],
     "isPrivate": false,

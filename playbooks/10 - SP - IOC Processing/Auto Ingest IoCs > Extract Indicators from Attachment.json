@@ -40,7 +40,7 @@
                         "option": "Manual Block",
                         "step_iri": "\/api\/3\/workflow_steps\/4a07bb16-9a12-4d4a-8f48-b9fb2d344a8a",
                         "condition": "{{ vars.steps.Select_Actions_on_IoCs.input.actionOnExtractedIoCs == \"Block Manually\" }}",
-                        "step_name": "Create Ioc Records"
+                        "step_name": "Create IoC Records"
                     }
                 ],
                 "step_variables": []
@@ -289,7 +289,7 @@
                 "input": {
                     "schema": {
                         "title": "Indicators Details",
-                        "description": "<html>\n<p style=\"font-family:verdana;\">Dear Team,<\/p>\n<p style=\"font-family:verdana;\">Please review the extracted indicators and select the action to be performed:<\/b><\/p>\n\n<head>\n<style>\ntable, th, td {\n  border: 1px solid;\n}\n<\/style>\n<\/head>\n<body>\n<table>\n<tr>\n<th style=\"background-color:teal;color:white;\">Type<\/th>\n<th style=\"background-color:teal;color:white;\">Value <\/th>\n<\/tr>\n{% for k, v in vars.fetched_indicators.items() %}\n<tr>\n<td>{{k}}<\/td>\n<td>{{v | join(\", \") | wordwrap(100)}}<\/td>\n<\/tr>\n{% endfor %}\n<\/table>\n<\/body>\n<\/html>\n",
+                        "description": "<html>\n<p style=\"font-family:verdana;\">Dear Team,<\/p>\n\n<p style=\"font-family:verdana;\">Please review the extracted indicators and select the action to be performed:<\/b><\/p>\n\n<p style=\"color: #FFBF00; font-family:verdana;\">&#9888; Warning:<\/p>\n<p style=\"font-family:verdana;\"> - Existing (already created) indicators will retain their reputation.<\/p>\n\n<p style=\"font-family:verdana;\"> - Only indicators that are not currently in \"Blocked\" status will be considered for blocking.<\/p>\n <br>\n\n<head>\n<style>\ntable, th, td {\n  border: 1px solid;\n}\n<\/style>\n<\/head>\n<body>\n<table>\n<tr>\n<th style=\"background-color:teal;color:white;\">Type<\/th>\n<th style=\"background-color:teal;color:white;\">Value <\/th>\n<\/tr>\n{% for k, v in vars.fetched_indicators.items() %}\n<tr>\n<td>{{k}}<\/td>\n<td>{{v | join(\", \") | wordwrap(100)}}<\/td>\n<\/tr>\n{% endfor %}\n<\/table>\n<\/body>\n<\/html>\n",
                         "inputVariables": [
                             {
                                 "name": "actionOnExtractedIoCs",
@@ -300,7 +300,7 @@
                                 "options": [
                                     "Block Automatically",
                                     "Block Manually",
-                                    "Reject"
+                                    "Do Not Block"
                                 ],
                                 "tooltip": "",
                                 "dataType": "dynamicList",
@@ -311,7 +311,7 @@
                                 "collection": false,
                                 "searchable": false,
                                 "templateUrl": "app\/components\/form\/fields\/dynamicList.html",
-                                "defaultValue": "Reject",
+                                "defaultValue": "Do Not Block",
                                 "_previousName": "actionOnExtractedIoCs",
                                 "playbookField": true,
                                 "lengthConstraint": true,
@@ -342,17 +342,31 @@
                                 "visibilityQuery": {
                                     "sort": [],
                                     "limit": 30,
-                                    "logic": "AND",
+                                    "logic": "OR",
                                     "filters": [
                                         {
                                             "type": "array",
                                             "field": "actionOnExtractedIoCs",
                                             "value": [
-                                                "Block Automatically",
+                                                "Block Automatically"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": null,
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        },
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
                                                 "Block Manually"
                                             ],
                                             "module": "actionOnExtractedIoCs",
-                                            "display": "",
+                                            "display": null,
                                             "operator": "in",
                                             "template": "tags",
                                             "OPERATOR_KEY": "$",
@@ -399,17 +413,31 @@
                                 "visibilityQuery": {
                                     "sort": [],
                                     "limit": 30,
-                                    "logic": "AND",
+                                    "logic": "OR",
                                     "filters": [
                                         {
                                             "type": "array",
                                             "field": "actionOnExtractedIoCs",
                                             "value": [
-                                                "Block Automatically",
                                                 "Block Manually"
                                             ],
                                             "module": "actionOnExtractedIoCs",
-                                            "display": "",
+                                            "display": null,
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        },
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
+                                                "Block Automatically"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": null,
                                             "operator": "in",
                                             "template": "tags",
                                             "OPERATOR_KEY": "$",
@@ -454,17 +482,31 @@
                                 "visibilityQuery": {
                                     "sort": [],
                                     "limit": 30,
-                                    "logic": "AND",
+                                    "logic": "OR",
                                     "filters": [
                                         {
                                             "type": "array",
                                             "field": "actionOnExtractedIoCs",
                                             "value": [
-                                                "Block Automatically",
+                                                "Block Automatically"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": null,
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        },
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
                                                 "Block Manually"
                                             ],
                                             "module": "actionOnExtractedIoCs",
-                                            "display": "",
+                                            "display": null,
                                             "operator": "in",
                                             "template": "tags",
                                             "OPERATOR_KEY": "$",
@@ -496,8 +538,23 @@
                                 "visibilityQuery": {
                                     "sort": [],
                                     "limit": 30,
-                                    "logic": "AND",
+                                    "logic": "OR",
                                     "filters": [
+                                        {
+                                            "type": "array",
+                                            "field": "actionOnExtractedIoCs",
+                                            "value": [
+                                                "Block Manually"
+                                            ],
+                                            "module": "actionOnExtractedIoCs",
+                                            "display": null,
+                                            "operator": "in",
+                                            "template": "tags",
+                                            "OPERATOR_KEY": "$",
+                                            "useInOperator": true,
+                                            "previousOperator": "in",
+                                            "previousTemplate": "tags"
+                                        },
                                         {
                                             "type": "array",
                                             "field": "actionOnExtractedIoCs",
@@ -505,7 +562,7 @@
                                                 "Block Automatically"
                                             ],
                                             "module": "actionOnExtractedIoCs",
-                                            "display": "",
+                                            "display": null,
                                             "operator": "in",
                                             "template": "tags",
                                             "OPERATOR_KEY": "$",
@@ -524,12 +581,15 @@
                         ]
                     }
                 },
-                "record": "",
+                "record": "{{vars.alert_iri}}",
+                "agent_id": null,
+                "resources": "alerts",
                 "is_approval": false,
                 "owner_detail": {
-                    "isAssigned": false
+                    "isAssigned": false,
+                    "emailRecipients": ""
                 },
-                "isRecordLinked": false,
+                "isRecordLinked": true,
                 "step_variables": [],
                 "response_mapping": {
                     "options": [
@@ -546,9 +606,14 @@
                     "enabled": false,
                     "smtpParameters": []
                 },
+                "customEmailExternal": false,
                 "inline_channel_list": [],
                 "external_channel_list": [],
-                "unauthenticated_input": false
+                "unauthenticated_input": false,
+                "external_email_subject": null,
+                "internal_email_subject": "A FortiSOAR playbook is requesting your input",
+                "custom_email_body_external": null,
+                "external_email_attachments": null
             },
             "status": null,
             "top": "840",
@@ -566,7 +631,8 @@
                 "step_variables": {
                     "input": {
                         "params": []
-                    }
+                    },
+                    "useMockOutput": "false"
                 },
                 "triggerOnSource": true,
                 "triggerOnReplicate": false
@@ -704,7 +770,7 @@
     "groups": [],
     "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
     "playbookOrigin": "\/api\/3\/picklists\/b6d710a9-a8ec-41ec-8817-fe9fa062fcdd",
-    "isEditable": false,
+    "isEditable": true,
     "uuid": "8d23cf2d-4f09-431f-af77-b14574851e2a",
     "owners": [],
     "isPrivate": false,
