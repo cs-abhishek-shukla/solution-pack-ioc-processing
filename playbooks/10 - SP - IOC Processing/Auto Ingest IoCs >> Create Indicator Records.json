@@ -62,6 +62,7 @@
                     "__link": {
                         "alerts": "{{vars.alert_iri}}"
                     },
+                    "lastSeen": "{{arrow.utcnow().int_timestamp}}",
                     "__replace": "true",
                     "confidence": "{{vars.input.params.confidence}}",
                     "expiryDate": "{{ arrow.now().int_timestamp + (vars.expiry | int) * 86400 }}",
