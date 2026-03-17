@@ -38,34 +38,46 @@ Navigate to the demo alert and note the following:
     ![Manual Input IoC details](./res/ioc-details-manual-input.png)
 
     On the manual input, users have the following actions available:
+    - Block Automatically
+    - Block Manually
+    - Do Not Block
 
-    - **Block Automatically**: Creates indicator records, marks their status as **Blocked**, and prompts for metadata (*Confidence*, *TLP*, *Reputation*).
+>[!Important]
+>For existing IoC records:
+>- Only the *Expires On*, *Confidence*, and *Last Seen* fields are updated; the reputation remains unchanged
+>- If the status of the IoCs is not *Blocked*, only then the IoCs are considered for blocking.
 
-        ![Define values before automatically blocking IoCs](./res/auto-block-ioc-options.png)
+### Block Automatically
 
-        Clicking **Proceed** triggers the following actions:
+Creates indicator records, marks their status as **Blocked**, and prompts for metadata (*Confidence*, *TLP*, *Reputation*).
 
-        - Creates IoC records under the module **Indicators** with *Confidence*, *TLP*, *Reputation*, and *Reason for Blocking* as specified in the manual input.
+![Define values before automatically blocking IoCs](./res/auto-block-ioc-options.png)
 
-        - Sets the status of the indicator records to **Blocked**.
+Clicking **Proceed** triggers the following actions:
 
-        - Sends the blocked IoCs to downstream blocking playbooks.
+- Creates IoC records under the module **Indicators** with *Confidence*, *TLP*, *Reputation*, and *Reason for Blocking* as specified in the manual input.
 
-        - For *each* indicator record created, a manual input like the following, asks users confirm that the indicator has been blocked.
+- Sets the status of the indicator records to **Blocked**.
 
-            ![](./res/blocking-confirmation.png)
+- For *each* indicator record created, a manual input like the following, asks users to confirm that the indicator has been blocked.
 
-    - **Block Manually**: Creates indicator records without modifying the status, and prompts for metadata (*Confidence*, *TLP*, *Reputation*)
+    ![](./res/blocking-confirmation.png)
 
-        Clicking **Proceed** triggers the following actions:
+### Block Manually
 
-        - Allows users to review and update the status of the indicator records later
+Creates indicator records *without modifying the status*, and prompts for metadata (*Confidence*, *TLP*, *Reputation*).
 
-        - Creates IoC records under the module **Indicators** with *Confidence*, *TLP*, and *Reputation* as specified in the manual input.
+![Define values before automatically blocking IoCs](./res/manual-block-ioc-options.png)
 
-    - **Reject**
+Clicking **Proceed** triggers the following actions:
 
-        - No action is taken on the extracted indicators
+- Creates IoC records under the module **Indicators** with *Confidence*, *TLP*, and *Reputation* as specified in the manual input.
+
+- Allows users to review and update the status of the indicator records later
+
+### Do Not Block
+
+No action is taken on the extracted indicators
 
 
 ## Next Steps
