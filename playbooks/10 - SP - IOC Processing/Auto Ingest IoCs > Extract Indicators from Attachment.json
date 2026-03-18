@@ -544,21 +544,6 @@
                                             "type": "array",
                                             "field": "actionOnExtractedIoCs",
                                             "value": [
-                                                "Block Manually"
-                                            ],
-                                            "module": "actionOnExtractedIoCs",
-                                            "display": null,
-                                            "operator": "in",
-                                            "template": "tags",
-                                            "OPERATOR_KEY": "$",
-                                            "useInOperator": true,
-                                            "previousOperator": "in",
-                                            "previousTemplate": "tags"
-                                        },
-                                        {
-                                            "type": "array",
-                                            "field": "actionOnExtractedIoCs",
-                                            "value": [
                                                 "Block Automatically"
                                             ],
                                             "module": "actionOnExtractedIoCs",
